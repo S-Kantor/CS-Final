@@ -12,5 +12,5 @@ Our project is a timetable creator for students. It will create courses using a 
 - Shows student timetable: Allows students to view their final timetable.
 
 ### Mockups:
-[](/mockups/1.jpg)
-[](/mockups/2.jpg)
+![](/mockups/1.jpg)
+![](/mockups/2.jpg)
