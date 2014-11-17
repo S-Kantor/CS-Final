@@ -26,3 +26,7 @@ class SQLWrapper:
     def insert(self, table, columns, data):
 
     def create(self, table):
+
+    def addStudent(self, studentID, grade):
+        statement = "INSERT INTO students (studentID, grade) VALUES (%s, %s)" % (studentID, grade)
+        self.cursor.execute.(statement)
