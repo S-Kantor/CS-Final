@@ -1,32 +1,32 @@
+import sqlite3
+
 class SQLWrapper:
 
     def __init__(self):
-        self.con = sqlite3.connect()
-        self.cursor = self.con.cursor
+        self.con = sqlite3.connect('test.db')
+        self.cursor = self.con.cursor()
 
-    def select(self, table, columns):
-        statement = "SELECT %s FROM &s" % (" ,".join(columns), table)
+    def createStudentsTable(self):
+        statement = "CREATE TABLE Students (studentId INTEGER, passwordHash VARCHAR(50), grade INTEGER)"
         self.cursor.execute(statement)
-        return self.cursor.fetchall()
-
-    def update(self, table, data, column, value):
-        str_data = ""
-        for key in data:
-            str_data += "%s = %s, " % (key, data[key])
-        statement = "UPDATE %s SET %s WHERE %s = %s" % (table, str_data, column, value)
-        self.cursor.exectue(statement)
-        self.cursor.commit()
+        self.con.commit()
         
-
-    def delete(self, table, column, value):
-        statement = "DELETE FROM %s WHERE %s = %s" % (table, columm, value)
+    def createCoursesTable(self):
+        statement = "CREATE TABLE Courses (courseId INTEGER, name VARCHAR(50), priority INTEGER)"
         self.cursor.execute(statement)
-        self.cursor.commit()
+        self.con.commit()
 
-    def insert(self, table, columns, data):
+    def addStudent(self, studentId, passwordHash, grade):
+        statement = "INSERT INTO Students VALUES (%s, '%s', %s)" % (studentId, passwordHash, grade)
+        self.cursor.execute(statement)
+        self.con.commit()
 
-    def create(self, table):
+    def addCourse(self, courseId, name, priority):
+        statement = "INSERT INTO Courses VALUES (%s, '%s', %s)" % (courseId, name, priority)
+        self.cursor.execute(statement)
+        self.con.commit()
 
-    def addStudent(self, studentID, grade):
-        statement = "INSERT INTO students (studentID, grade) VALUES (%s, %s)" % (studentID, grade)
-        self.cursor.execute.(statement)
+    def deleteStudent(self, studentId):
+        statement = "DELETE FROM Students WHERE studentId = %s" % (studentId)
+        self.cursor.execute(statement)
+        self.con.commit()
