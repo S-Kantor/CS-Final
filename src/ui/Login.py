@@ -40,8 +40,20 @@ class LoginFrame(Frame):
         passwordText = Entry(self)
         passwordText.grid(row=4, column=0)
 
-        loginButton = Button(self, text="Login")
+        loginButton = Button(self, text="Login", command = self.login)
         loginButton.grid(row=5, column=0)
+
+    def login (self):
+        self.Main_Screen = Main_Screen()
+
+class Main_Screen(Frame):     
+    def __init__(self):
+        new = Frame.__init__(self)
+        new = Toplevel(self)
+        new.title("Main Screen")
+
+    def close_window(self):
+        self.destroy()        
     
 def main():
     root = Tk()
