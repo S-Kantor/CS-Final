@@ -5,6 +5,7 @@
 ##
 
 from tkinter import *
+    
 
 class LoginFrame(Frame):
     def __init__(self, parent):
@@ -18,23 +19,29 @@ class LoginFrame(Frame):
         self.parent.title("Login")
         self.pack(fill=BOTH, expand=1)
 
-        self.columconfigure(0, weight=1)
+        self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
         self.rowconfigure(2, weight=1)
         self.rowconfigure(3, weight=1)
+        self.rowconfigure(4, weight=1)
+        self.rowconfigure(5, weight=1)
 
-        loginLabel = Label(self, text="Login")
-        loginLabel.grid(row=0, column=0)
+        loginLabel = Label(self, text="Login", font=(16))  
+        loginLabel.grid(row=0, column=0, sticky=S)
 
-        idText = Text(self)
-        idText.grid(row=1, column=0)
+        idLabel = Label(self, text="Student ID:")
+        idLabel.grid(row=1, column=0, sticky=S)
+        idText = Entry(self)
+        idText.grid(row=2, column=0)
 
-        passwordText = Text(self)
-        passwordText.grid(row=2, column=0)
+        passwordLabel = Label(self, text="Password:")
+        passwordLabel.grid(row=3, column=0, sticky=S)
+        passwordText = Entry(self)
+        passwordText.grid(row=4, column=0)
 
         loginButton = Button(self, text="Login")
-        loginButton.grid(row=3, column=0)
+        loginButton.grid(row=5, column=0)
     
 def main():
     root = Tk()
