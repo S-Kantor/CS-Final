@@ -7,17 +7,17 @@
 
 from tkinter import *
 
-class Main_Screen(Frame):
+class MainFrame(Frame):
     def __init__(self, parent):
         Frame.__init__(self, parent)
 
         self.parent = parent
 
-        self.columnconfig()
+        self.gridconfig()
 
         self.initUI()
 
-    def columnconfig(self):
+    def gridconfig(self):
 
         #Config Column 1 and rows for column one
 
@@ -41,7 +41,9 @@ class Main_Screen(Frame):
 
         
 
-    def  initUI(self):
+    def initUI(self):
+        
+    
         self.parent.title("Main Screen")
         self.pack(fill=BOTH, expand=1)
 
@@ -58,9 +60,8 @@ class Main_Screen(Frame):
 
 def main():
     root = Tk()
-    RTitle=root.title("Main Screen")
     root.geometry("450x400+400+400")
-    app = Main_Screen(root)
+    app = MainFrame(root)
     root.mainloop()
 
 if __name__ == '__main__':
