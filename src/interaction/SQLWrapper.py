@@ -2,8 +2,8 @@ import sqlite3
 
 class SQLWrapper:
 
-    def __init__(self):
-        self.con = sqlite3.connect('test.db')
+    def __init__(self, dbName = "timetable"):
+        self.con = sqlite3.connect(dbName+'.db')
         self.cursor = self.con.cursor()
 
     def createStudentsTable(self):
