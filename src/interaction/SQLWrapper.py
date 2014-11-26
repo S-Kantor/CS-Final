@@ -7,12 +7,12 @@ class SQLWrapper:
         self.cursor = self.con.cursor()
 
     def createStudentsTable(self):
-        statement = "CREATE TABLE Students (studentId INTEGER, passwordHash VARCHAR(50), grade INTEGER)"
+        statement = "CREATE TABLE Students (studentId INTEGER, passwordHash TEXT, grade INTEGER, courses TEXT)"
         self.cursor.execute(statement)
         self.con.commit()
         
     def createCoursesTable(self):
-        statement = "CREATE TABLE Courses (courseId INTEGER, name VARCHAR(50), priority INTEGER)"
+        statement = "CREATE TABLE Courses (courseId INTEGER, name TEXT, priority INTEGER)"
         self.cursor.execute(statement)
         self.con.commit()
 
@@ -21,6 +21,11 @@ class SQLWrapper:
         self.cursor.execute(statement)
         self.con.commit()
 
+    def addStudentCourses (self, studentId, courses):
+        statement = "UPDATE Students SET courses = '%s' WHERE studentId = %s" % (repr(courses), studentId)
+        self.cursos.execute(statement)
+        self.con.commit()
+        
     def addCourse(self, courseId, name, priority):
         statement = "INSERT INTO Courses VALUES (%s, '%s', %s)" % (courseId, name, priority)
         self.cursor.execute(statement)
