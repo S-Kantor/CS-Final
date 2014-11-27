@@ -5,7 +5,6 @@
 ##
 
 from tkinter import *
-    
 
 class LoginFrame(Frame):
     def __init__(self, parent):
@@ -15,8 +14,20 @@ class LoginFrame(Frame):
 
         self.initUI()
 
+    def center_window(self):
+        screenWidth = self.parent.winfo_screenwidth()
+        screenHeight = self.parent.winfo_screenheight()
+
+        # Calculate (x, y) position of window
+        x = (screenWidth/2) - (400/2)
+        y = (screenHeight/2) - (300/2)
+
+        self.parent.geometry('%dx%d+%d+%d' % (300, 300, x, y))
+
     def initUI(self):
+        self.center_window()
         self.parent.title("Login")
+        self.parent.resizable(width=FALSE, height=FALSE)
         self.pack(fill=BOTH, expand=1)
 
         self.columnconfigure(0, weight=1)
@@ -26,6 +37,7 @@ class LoginFrame(Frame):
         self.rowconfigure(3, weight=1)
         self.rowconfigure(4, weight=1)
         self.rowconfigure(5, weight=1)
+        self.rowconfigure(6, weight=1)
 
         loginLabel = Label(self, text="Login", font=(16))  
         loginLabel.grid(row=0, column=0, sticky=S)
@@ -43,7 +55,13 @@ class LoginFrame(Frame):
         loginButton = Button(self, text="Login", command = self.login)
         loginButton.grid(row=5, column=0)
 
+        createButton = Button(self, text="Create Account", command = self.create_account)
+        createButton.grid(row=6, column=0)
+        
     def login(self):
+        return
+
+    def create_account(self):
         return
 
 class CreateAccountFrame(Frame):
