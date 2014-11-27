@@ -24,25 +24,3 @@ for i in range (0,5):
     h.addCourse(i + 3, Courses[i+2], 2)
 for i in range (0,2):
     h.addCourse(i+8, Courses[i+7],1)
-
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
