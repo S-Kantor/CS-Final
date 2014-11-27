@@ -1,9 +1,10 @@
 import sqlite3
+from models.Course import Course
 
 class SQLWrapper:
 
-    def __init__(self, dbName = "timetable"):
-        self.con = sqlite3.connect(dbName+'.db')
+    def __init__(self):
+        self.con = sqlite3.connect('test.db')
         self.cursor = self.con.cursor()
 
     def createStudentsTable(self):
@@ -35,3 +36,19 @@ class SQLWrapper:
         statement = "DELETE FROM Students WHERE studentId = %s" % (studentId)
         self.cursor.execute(statement)
         self.con.commit()
+
+    def getCourse(self, courseId):
+        statement = "SELECT courseId, name, priority FROM Courses WHERE courseId = %s" % (courseId)
+        self.cursor.execute(statement)
+
+    def getAllCourses(self):
+        statement = "SELECT * FROM Courses"
+        self.cursor.execute(statement)
+
+    def getStudentId(self, studentId):
+        statement = "SELECT studentId FROM Student WHERE studentId = %s" % (studentId)
+        self.cursor.execute(statement)
+        
+
+
+
