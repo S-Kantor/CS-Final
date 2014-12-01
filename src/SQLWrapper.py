@@ -1,4 +1,6 @@
 import sqlite3
+import Course
+import Student
 
 class SQLWrapper:
 
@@ -22,12 +24,12 @@ class SQLWrapper:
         self.cursor.execute(statement)
         self.con.commit()
 
-    def addStudent(self, studentId, passwordHash, grade):
-        """ (int, str, str) -> (none)
+    def addStudent(self, studentId, passwordHash, grade, courses = None):
+        """ (int, str, int) -> (none)
 
         Adds a student into the database
         """
-        statement = "INSERT INTO Students VALUES (%s, '%s', %s)" % (studentId, passwordHash, grade)
+        statement = "INSERT INTO Students VALUES (%s, '%s', %s, %s)" % (studentId, passwordHash, grade, repr(courses))
         self.cursor.execute(statement)
         self.con.commit()
 
@@ -61,6 +63,8 @@ class SQLWrapper:
     def getCourse(self, courseId):
         statement = "SELECT * FROM Courses WHERE courseId = %s" % (courseId)
         self.cursor.execute(statement)
+        row = self.cursor.fetchone()
+        return Course.Course(row[0], row[1], row[2])
 
     def getAllCourses(self):
         statement = "SELECT * FROM Courses"
@@ -69,6 +73,8 @@ class SQLWrapper:
     def getStudent(self, studentId):
         statement = "SELECT * FROM Students WHERE studentId = %s" % (studentId)
         self.cursor.execute(statement)
+        row = self.cursor.fetchone()
+        return Student.Student(row[0], row[1], row[2])
 
     def getAllStudents(self, studentId):
         statement = "SELECT * FROM Students"
