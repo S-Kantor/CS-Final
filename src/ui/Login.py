@@ -19,7 +19,7 @@ class LoginFrame(Frame):
         screenHeight = self.parent.winfo_screenheight()
 
         # Calculate (x, y) position of window
-        x = (screenWidth/2) - (400/2)
+        x = (screenWidth/2) - (300/2)
         y = (screenHeight/2) - (300/2)
 
         self.parent.geometry('%dx%d+%d+%d' % (300, 300, x, y))
@@ -49,7 +49,7 @@ class LoginFrame(Frame):
 
         passwordLabel = Label(self, text="Password:")
         passwordLabel.grid(row=3, column=0, sticky=S)
-        passwordText = Entry(self)
+        passwordText = Entry(self, show="*")
         passwordText.grid(row=4, column=0)
 
         loginButton = Button(self, text="Login", command = self.login)
@@ -62,6 +62,7 @@ class LoginFrame(Frame):
         return
 
     def create_account(self):
+        createAccountWin = CreateAccountFrame(self)
         return
 
 class CreateAccountFrame(Frame):
@@ -70,7 +71,18 @@ class CreateAccountFrame(Frame):
         self.parent = parent
         self.initUI()
 
+    def center_window(self):
+        screenWidth = self.parent.winfo_screenwidth()
+        screenHeight = self.parent.winfo_screenheight()
+
+        # Calculate (x, y) position of window
+        x = (screenWidth/2) - (300/2)
+        y = (screenHeight/2) - (300/2)
+
+        self.parent.geometry('%dx%d+%d+%d' % (300, 300, x, y))
+
     def initUI(self):
+        self.center_window()
         self.parent.title("Create an Account")
         self.pack(fill=BOTH, expand=1)
 
@@ -93,21 +105,20 @@ class CreateAccountFrame(Frame):
 
         passwordLabel = Label(self, text="Password:")
         passwordLabel.grid(row=3, column=0, sticky=S)
-        passwordText = Entry(self)
+        passwordText = Entry(self, show="*")
         passwordText.grid(row=4, column=0)
 
         gradeLabel = Label(self, text="Grade:")
         gradeLabel.grid(row=5, column=0, sticky=S)
 
-        variable = StringVar(master)
+        variable = StringVar(self.parent)
         variable.set("9")
         gradeSelection = OptionMenu(self, variable, "9", "10", "11", "12")
-        gradeSelection.grid(row=6, column=0, sticky=S)
+        gradeSelection.grid(row=6, column=0, sticky=N)
     
 def main():
     root = Tk()
-    root.geometry("350x300+300+300")
-    app = LoginFrame(root)
+    app = CreateAccountFrame(root)
     root.mainloop()
 
 if __name__ == '__main__':
