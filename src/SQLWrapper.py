@@ -8,7 +8,7 @@ class SQLWrapper:
 
     def createStudentsTable(self):
         """
-        Creates a table where students can fill their table with courses
+        Creates a table to store student data
         """
         statement = "CREATE TABLE Students (studentId INTEGER, passwordHash TEXT, grade INTEGER, courses TEXT)"
         self.cursor.execute(statement)
@@ -16,14 +16,15 @@ class SQLWrapper:
         
     def createCoursesTable(self):
         """
-        Creates a table with all available courses
+        Creates a courses table
         """
         statement = "CREATE TABLE Courses (courseId INTEGER, name TEXT, priority INTEGER)"
         self.cursor.execute(statement)
         self.con.commit()
 
     def addStudent(self, studentId, passwordHash, grade):
-        """
+        """ (int, str, str) -> (none)
+
         Adds a student into the database
         """
         statement = "INSERT INTO Students VALUES (%s, '%s', %s)" % (studentId, passwordHash, grade)
@@ -31,20 +32,26 @@ class SQLWrapper:
         self.con.commit()
 
     def addStudentCourses (self, studentId, courses):
-        """
-        Adds a course to the Students selected courses
+        """ (int, str) -> (none)
+
+        Adds all courses for Students to choose from
         """
         statement = "UPDATE Students SET courses = '%s' WHERE studentId = %s" % (repr(courses), studentId)
         self.cursos.execute(statement)
         self.con.commit()
         
     def addCourse(self, courseId, name, priority):
+        """ (int, str, int) -> (none)
+
+        Adds a course to the Students selected courses
+        """
         statement = "INSERT INTO Courses VALUES (%s, '%s', %s)" % (courseId, name, priority)
         self.cursor.execute(statement)
         self.con.commit()
 
     def deleteStudent(self, studentId):
-        """
+        """ (str) -> (none)
+
         Deletes a student from a selected course
         """
         statement = "DELETE FROM Students WHERE studentId = %s" % (studentId)
