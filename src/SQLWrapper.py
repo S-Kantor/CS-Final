@@ -12,7 +12,7 @@ class SQLWrapper:
         """
         Creates a table to store student data
         """
-        statement = "CREATE TABLE Students (studentId INTEGER, passwordHash TEXT, grade INTEGER, courses TEXT)"
+        statement = "CREATE TABLE Students (studentId INTEGER, grade INTEGER, selectedCourses TEXT, availableCourses TEXT, passwordHash TEXT)"
         self.cursor.execute(statement)
         self.con.commit()
         
@@ -24,14 +24,15 @@ class SQLWrapper:
         self.cursor.execute(statement)
         self.con.commit()
 
-    def addStudent(self, studentId, passwordHash, grade, courses = None):
-        """ (int, str, int) -> (none)
+    def addStudent(self, studentId, grade, passwordHash):
+        """ (int, int, str) -> (none)
 
         Adds a student into the database
         """
-        statement = "INSERT INTO Students VALUES (%s, '%s', %s, %s)" % (studentId, passwordHash, grade, repr(courses))
+        statement = "INSERT INTO Students VALUES (%s, %s, '%s', '%s', '%s')" % (studentId, grade, None, None, passwordHash)
         self.cursor.execute(statement)
         self.con.commit()
+        
 
     def addStudentCourses (self, studentId, courses):
         """ (int, str) -> (none)
@@ -74,11 +75,14 @@ class SQLWrapper:
         statement = "SELECT * FROM Students WHERE studentId = %s" % (studentId)
         self.cursor.execute(statement)
         row = self.cursor.fetchone()
-        return Student.Student(row[0], row[1], row[2])
+        return self.parseStudent(row)
 
     def getAllStudents(self, studentId):
         statement = "SELECT * FROM Students"
         self.cursor.execute(statement)
+
+    def parseStudent(self, row):
+        return Student.Student(row[0], row[1], row[2], row[3], row[4])
 
 
 
