@@ -62,7 +62,8 @@ class LoginFrame(Frame):
         return
 
     def create_account(self):
-        createAccountWin = CreateAccountFrame(self)
+        self.newWindow = Toplevel(self.master)
+        self.app = CreateAccountFrame(self.newWindow)
         return
 
 class CreateAccountFrame(Frame):
@@ -118,7 +119,7 @@ class CreateAccountFrame(Frame):
     
 def main():
     root = Tk()
-    app = CreateAccountFrame(root)
+    app = LoginFrame(root)
     root.mainloop()
 
 if __name__ == '__main__':
