@@ -5,7 +5,6 @@
 ##
 
 
-
 import SQLWrapper as wrapper
 
 h = wrapper.SQLWrapper() # Initializing Class
