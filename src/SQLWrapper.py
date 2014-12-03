@@ -77,9 +77,13 @@ class SQLWrapper:
         row = self.cursor.fetchone()
         return self.parseStudent(row)
 
-    def getAllStudents(self, studentId):
+    def getAllStudents(self):
         statement = "SELECT * FROM Students"
         self.cursor.execute(statement)
+        students = []
+        for row in self.cursor.fetchall():
+            students.append(self.parseStudent(row))
+        return students
 
     def parseStudent(self, row):
         return Student.Student(row[0], row[1], row[2], row[3], row[4])
