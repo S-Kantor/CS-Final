@@ -65,11 +65,15 @@ class SQLWrapper:
         statement = "SELECT * FROM Courses WHERE courseId = %s" % (courseId)
         self.cursor.execute(statement)
         row = self.cursor.fetchone()
-        return Course.Course(row[0], row[1], row[2])
+        return self.parseCourse(row)
 
     def getAllCourses(self):
         statement = "SELECT * FROM Courses"
         self.cursor.execute(statement)
+        courses = []
+        for row in self.cursor.fetchall():
+            courses.append(self.parseCourse(row))
+        return courses
 
     def getStudent(self, studentId):
         statement = "SELECT * FROM Students WHERE studentId = %s" % (studentId)
@@ -87,6 +91,9 @@ class SQLWrapper:
 
     def parseStudent(self, row):
         return Student.Student(row[0], row[1], row[2], row[3], row[4])
+
+    def parseCourse(self, row):
+        return Course.Course(row[0], row[1], row[2])
 
 
 
