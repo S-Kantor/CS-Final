@@ -5,6 +5,8 @@
 ##
 
 from tkinter import *
+from SQLWrapper import *
+s = SQLWrapper()
 
 class LoginFrame(Frame):
     def __init__(self, parent):
@@ -102,27 +104,28 @@ class CreateAccountFrame(Frame):
 
         idLabel = Label(self, text="Student ID:")
         idLabel.grid(row=1, column=0, sticky=S)
-        idText = Entry(self)
-        idText.grid(row=2, column=0)
+        self.idText = Entry(self)
+        self.idText.grid(row=2, column=0)
 
         passwordLabel = Label(self, text="Password:")
         passwordLabel.grid(row=3, column=0, sticky=S)
-        passwordText = Entry(self, show="*")
-        passwordText.grid(row=4, column=0)
+        self.passwordText = Entry(self, show="*")
+        self.passwordText.grid(row=4, column=0)
 
         gradeLabel = Label(self, text="Grade:")
         gradeLabel.grid(row=5, column=0, sticky=S)
 
-        variable = StringVar(self.parent)
-        variable.set("9")
-        gradeSelection = OptionMenu(self, variable, "9", "10", "11", "12")
-        gradeSelection.grid(row=6, column=0, sticky=N)
+        self.variable = StringVar(self.parent)
+        self.variable.set("9")
+        self.gradeSelection = OptionMenu(self, self.variable, "9", "10", "11", "12")
+        self.gradeSelection.grid(row=6, column=0, sticky=N)
 
         createAccButton = Button(self, text="Create Account", command = self.create_account)
         createAccButton.grid(row=7, column=0)
 
     def create_account(self):
-        return
+        s.addStudent(self.idText.get(), self.variable.get(), self.passwordText.get())
+        self.parent.destroy()
     
 def main():
     root = Tk()
