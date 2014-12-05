@@ -95,6 +95,7 @@ class CreateAccountFrame(Frame):
         self.rowconfigure(4, weight=1)
         self.rowconfigure(5, weight=1)
         self.rowconfigure(6, weight=1)
+        self.rowconfigure(7, weight=1)
 
         createAccountLabel = Label(self, text="Create an Account", font=(16))
         createAccountLabel.grid(row=0, column=0, sticky=S)
@@ -116,6 +117,12 @@ class CreateAccountFrame(Frame):
         variable.set("9")
         gradeSelection = OptionMenu(self, variable, "9", "10", "11", "12")
         gradeSelection.grid(row=6, column=0, sticky=N)
+
+        createAccButton = Button(self, text="Create Account", command = self.create_account)
+        createAccButton.grid(row=7, column=0)
+
+    def create_account(self):
+        return
     
 def main():
     root = Tk()
