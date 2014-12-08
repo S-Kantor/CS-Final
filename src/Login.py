@@ -46,13 +46,13 @@ class LoginFrame(Frame):
 
         idLabel = Label(self, text="Student ID:")
         idLabel.grid(row=1, column=0, sticky=S)
-        idText = Entry(self)
-        idText.grid(row=2, column=0)
+        self.idText = Entry(self)
+        self.idText.grid(row=2, column=0)
 
         passwordLabel = Label(self, text="Password:")
         passwordLabel.grid(row=3, column=0, sticky=S)
-        passwordText = Entry(self, show="*")
-        passwordText.grid(row=4, column=0)
+        self.passwordText = Entry(self, show="*")
+        self.passwordText.grid(row=4, column=0)
 
         loginButton = Button(self, text="Login", command = self.login)
         loginButton.grid(row=5, column=0)
@@ -61,7 +61,12 @@ class LoginFrame(Frame):
         createButton.grid(row=6, column=0)
         
     def login(self):
-        return
+        student = s.getStudent(self.idText.get())
+        if student != None and student.passwordHash == self.passwordText.get():
+            print("Success")
+        else:
+            print("Error")
+            
 
     def create_account(self):
         self.newWindow = Toplevel(self.master)
