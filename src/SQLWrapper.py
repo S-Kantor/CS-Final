@@ -34,13 +34,14 @@ class SQLWrapper:
         self.con.commit()
         
 
-    def addStudentCourses (self, studentId, courses):
+    def addStudentCourses (self, studentId, selectedCourses):
         """ (int, str) -> (none)
 
         Adds all courses for Students to choose from
         """
-        statement = "UPDATE Students SET courses = '%s' WHERE studentId = %s" % (repr(courses), studentId)
-        self.cursos.execute(statement)
+        statement = "UPDATE Students SET selectedCourses = '%s' WHERE studentId = %s" % (repr(selectedCourses), studentId)
+        print (statement)
+        self.cursor.execute(statement)
         self.con.commit()
         
     def addCourse(self, courseId, name, priority):
