@@ -6,13 +6,17 @@
 
 from tkinter import *
 from SQLWrapper import *
+from Main import *
 s = SQLWrapper()
+root = Tk()
+app = None
 
 class LoginFrame(Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, app):
         Frame.__init__(self, parent)
 
         self.parent = parent
+        self.app = app
 
         self.initUI()
 
@@ -63,9 +67,11 @@ class LoginFrame(Frame):
     def login(self):
         student = s.getStudent(self.idText.get())
         if student != None and student.passwordHash == self.passwordText.get():
-            print("Success")
+            print("Login Successful")
+            self.app.destroy()
+            self.app = MainFrame(root)
         else:
-            print("Error")
+            print("Incorrect Credentials")
             
 
     def create_account(self):
@@ -133,8 +139,8 @@ class CreateAccountFrame(Frame):
         self.parent.destroy()
     
 def main():
-    root = Tk()
-    app = LoginFrame(root)
+    app = LoginFrame(root, None)
+    app.app = app
     root.mainloop()
 
 if __name__ == '__main__':
