@@ -16,19 +16,45 @@ class MainFrame(Frame):
         self.initUI()
 
     def initUI(self):
-        self.parent.title("Main Screen")
-        self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1)
-        self.grid()
+        self.parent.title("Course Selection Screen")
 
-        self.available = Listbox(self)
-        self.available.grid(row=0, column=0, rowspan=2)
 
-        self.selected = Listbox(self)
-        self.selected.grid(row=0, column=1, rowspan=2)
+        idLabel = Label(self, text="Course Selection:", font=(26))
+        idLabel.grid(row=0, columnspan=20, column=0, sticky=S)
 
-        for i in range(100):
-            self.available.insert(END, str(i))
+        #####
+        
+        Box1ID = Label(self, text="Department:")
+        Box1ID.grid(row=1, column=0, sticky=S)
+        
+        scroller1 = Scrollbar(self, orient="vertical")
+        Box1 = Listbox(self, width=30, height=20, yscrollcommand=scroller1.set)
+        scroller1.config(command=Box1.yview)
+
+        Box1.grid(row=2, column=0)
+        scroller1.grid(sticky=E, row = 2, rowspan = 100, column = 1, ipady = 138)
+
+        loginButton = Button(self, text="Choose Course")
+        loginButton.grid(row=3, column=0)
+        
+        #####
+
+        Box2ID = Label(self, text="Course:")
+        Box2ID.grid(row=1, column=2, sticky=S)
+        
+        scroller2 = Scrollbar(self, orient="vertical")
+        Box2 = Listbox(self, width=30, height=20, yscrollcommand=scroller2.set)
+        scroller2.config(command=Box2.yview)
+
+        Box2.grid(row=2, column=2)
+        scroller2.grid(sticky=E, row = 2, rowspan = 100, column = 3, ipady = 138)
+
+        submitButton = Button(self, text="Submit Course")
+        submitButton.grid(row=3, column=2)
+        
+        #####
+
+        self.pack()
         
 def main():
     root = Tk()
