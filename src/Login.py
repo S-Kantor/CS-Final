@@ -68,8 +68,9 @@ class LoginFrame(Frame):
         student = s.getStudent(self.idText.get())
         if student != None and student.passwordHash == self.passwordText.get():
             print("Login Successful")
-            self.app.destroy()
-            self.app = MainFrame(root)
+            # Destroy the LoginFrame and create a MainFrame to replace it
+            self.destroy()
+            MainFrame(root)
         else:
             print("Incorrect Credentials")
             
@@ -139,8 +140,9 @@ class CreateAccountFrame(Frame):
         self.parent.destroy()
     
 def main():
-    app = LoginFrame(root, None)
-    app.app = app
+    window = LoginFrame(root, None)
+    # Save the frame in the window so we have access to it later on
+    window.app = app
     root.mainloop()
 
 if __name__ == '__main__':

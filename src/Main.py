@@ -16,7 +16,9 @@ class MainFrame(Frame):
         self.initUI()
 
     def initUI(self):
+        self.parent.geometry("450x400+400+400")
         self.parent.title("Course Selection Screen")
+        self.parent.resizable(width=TRUE, height=TRUE)
 
 
         idLabel = Label(self, text="Course Selection:", font=(26))
