@@ -6,6 +6,8 @@
 
 
 from tkinter import *
+from SQLWrapper import *
+s = SQLWrapper()
 
 class MainFrame(Frame):
     def __init__(self, parent):
@@ -26,12 +28,14 @@ class MainFrame(Frame):
 
         #####
         
-        Box1ID = Label(self, text="Department:")
+        Box1ID = Label(self, text="Available Courses:")
         Box1ID.grid(row=1, column=0, sticky=S)
         
         scroller1 = Scrollbar(self, orient="vertical")
         Box1 = Listbox(self, width=30, height=20, yscrollcommand=scroller1.set)
         scroller1.config(command=Box1.yview)
+        for course in s.getAllCourses():
+            Box1.insert(END, course.name)
 
         Box1.grid(row=2, column=0)
         scroller1.grid(sticky=E, row = 2, rowspan = 100, column = 1, ipady = 138)
