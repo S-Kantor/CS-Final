@@ -67,8 +67,12 @@ class MainFrame(Frame):
         print("Button pressed")
         selection = self.Box1.curselection()
         print(selection)
-        if len(selection) > 0:
-            self.Box2.insert(END, self.Box1.get(selection[0]))
+        if len(selected_courses) < 5 and selection[0] == selected_courses[i]:           
+            if len(selection) > 0:
+                self.Box2.insert(END, self.Box1.get(selection[0]))
+                selected_courses.append(self.Box1.get(selection[0]))
+            
+            
         
         
 def main():
