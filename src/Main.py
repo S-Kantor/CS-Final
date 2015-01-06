@@ -29,32 +29,32 @@ class MainFrame(Frame):
 
         #####
         
-        Box2ID = Label(self, text="Course:")
-        Box2ID.grid(row=1, column=2, sticky=S)
+        selectedCoursesLabel = Label(self, text="Course:")
+        selectedCoursesLabel.grid(row=1, column=2, sticky=S)
         
-        scroller2 = Scrollbar(self, orient="vertical")
-        self.Box2 = Listbox(self, width=30, height=20, yscrollcommand=scroller2.set)
-        scroller2.config(command=self.Box2.yview)
+        selectedCoursesScroller = Scrollbar(self, orient="vertical")
+        self.selectedCoursesBox = Listbox(self, width=30, height=20, yscrollcommand=selectedCoursesScroller.set)
+        selectedCoursesScroller.config(command=self.selectedCoursesBox.yview)
 
-        self.Box2.grid(row=2, column=2)
-        scroller2.grid(sticky=E, row = 2, rowspan = 100, column = 3, ipady = 138)
+        self.selectedCoursesBox.grid(row=2, column=2)
+        selectedCoursesScroller.grid(sticky=E, row = 2, rowspan = 100, column = 3, ipady = 138)
 
         submitButton = Button(self, text="Submit Course")
         submitButton.grid(row=3, column=2)
         
         #####
         
-        Box1ID = Label(self, text="Available Courses:")
-        Box1ID.grid(row=1, column=0, sticky=S)
+        avaliableCoursesLabel = Label(self, text="Available Courses:")
+        avaliableCoursesLabel.grid(row=1, column=0, sticky=S)
         
-        scroller1 = Scrollbar(self, orient="vertical")
-        self.Box1 = Listbox(self, width=30, height=20, yscrollcommand=scroller1.set)
-        scroller1.config(command=self.Box1.yview)
+        avaliableCoursesScroller = Scrollbar(self, orient="vertical")
+        self.availableCoursesBox = Listbox(self, width=30, height=20, yscrollcommand=avaliableCoursesScroller.set)
+        avaliableCoursesScroller.config(command=self.availableCoursesBox.yview)
         for course in s.getAllCourses():
-            self.Box1.insert(END, course.name)
+            self.availableCoursesBox.insert(END, course.name)
 
-        self.Box1.grid(row=2, column=0)
-        scroller1.grid(sticky=E, row = 2, rowspan = 100, column = 1, ipady = 138)
+        self.availableCoursesBox.grid(row=2, column=0)
+        avaliableCoursesScroller.grid(sticky=E, row = 2, rowspan = 100, column = 1, ipady = 138)
 
         loginButton = Button(self, text="Choose Course", command = self.chooseCourse)
         loginButton.grid(row=3, column=0)
@@ -64,13 +64,11 @@ class MainFrame(Frame):
         self.pack()
 
     def chooseCourse(self):
-        print("Button pressed")
-        selection = self.Box1.curselection()
-        print(selection)
-        if len(selected_courses) < 5 and selection[0] == selected_courses[i]:           
+        selection = self.availableCoursesBox.get(self.availableCoursesBox.curselection()[0]) # get selected string
+        if len(selected_courses) < 5 and selection not in selected_courses:           
             if len(selection) > 0:
-                self.Box2.insert(END, self.Box1.get(selection[0]))
-                selected_courses.append(self.Box1.get(selection[0]))
+                self.selectedCoursesBox.insert(END, selection)
+                selected_courses.append(selection)
             
             
         
