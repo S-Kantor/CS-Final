@@ -11,12 +11,14 @@ s = SQLWrapper()
 selected_courses = []
 
 class MainFrame(Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, studentId):
         Frame.__init__(self, parent)
 
         self.parent = parent
 
         self.initUI()
+
+        self.studentId = studentId
 
     def initUI(self):
         self.parent.geometry("450x400+400+400")
@@ -39,7 +41,7 @@ class MainFrame(Frame):
         self.selectedCoursesBox.grid(row=2, column=2)
         selectedCoursesScroller.grid(sticky=E, row = 2, rowspan = 100, column = 3, ipady = 138)
 
-        submitButton = Button(self, text="Submit Course")
+        submitButton = Button(self, text="Submit Course", command = self.submitCourses)
         submitButton.grid(row=3, column=2)
         
         #####
@@ -69,8 +71,50 @@ class MainFrame(Frame):
             if len(selection) > 0:
                 self.selectedCoursesBox.insert(END, selection)
                 selected_courses.append(selection)
-            
-            
+
+    def submitCourses(self):
+        self.newWindow = Toplevel(self.master)
+        self.app = callback(self.newWindow, self.studentId)
+        return
+
+class callback(Frame):
+    def __init__(self, parent, studentId):
+        Frame.__init__(self, parent)
+        self.parent = parent
+        self.initUI()
+        self.studentId = studentId
+
+    def center_window(self):
+        screenWidth = self.parent.winfo_screenwidth()
+        screenHeight = self.parent.winfo_screenheight()
+
+        x = (screenWidth / 2) - (300 / 2)
+        y = (screenHeight / 2) - (300 / 2)
+
+        self.parent.geometry('%dx%d+%d+%d' % (300, 300, x, y))
+
+    def initUI(self):
+        self.center_window()
+        self.parent.title("Attention")
+        self.pack(fill = BOTH, expand = 1)
+
+        self.columnconfigure(0, weight = 1)
+        self.rowconfigure(0, weight = 1)
+        self.rowconfigure(1, weight = 1)
+        self.rowconfigure(2, weight = 1)
+
+        callbackLabel = Label(self, text = "Are you sure you want to select these courses?", font = (16))
+        callbackLabel.grid(row = 0, column = 0, sticky = S)
+        
+        yesButton = Button(self, text = "Yes", command = self.confirmCourses)
+        yesButton.grid(row = 1, column = 0)
+
+        noButton = Button(self, text = "No")
+        noButton.grid(row = 2, column = 0)
+
+    def confirmCourses(self):
+        s.addStudentCourses(self.studentId, str(selected_courses))
+        self.parent.destroy()
         
         
 def main():
