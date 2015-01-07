@@ -42,7 +42,7 @@ class MainFrame(Frame):
         selectedCoursesScroller.grid(sticky=E, row = 2, rowspan = 100, column = 3, ipady = 138)
 
         submitButton = Button(self, text="Submit Course", command = self.submitCourses)
-        submitButton.grid(row=3, column=2)
+        submitButton.grid(row=3, column=1)
         
         #####
         
@@ -58,9 +58,14 @@ class MainFrame(Frame):
         self.availableCoursesBox.grid(row=2, column=0)
         avaliableCoursesScroller.grid(sticky=E, row = 2, rowspan = 100, column = 1, ipady = 138)
 
-        loginButton = Button(self, text="Choose Course", command = self.chooseCourse)
-        loginButton.grid(row=3, column=0)
+        chooseButton = Button(self, text="Choose Course", command = self.chooseCourse)
+        chooseButton.grid(row=3, column=0)
         
+        #####
+
+        removeButton = Button(self, text = "Remove Course", command = self.removeCourse)
+        removeButton.grid(row = 3, column = 2)
+
         #####
 
         self.pack()
@@ -73,9 +78,21 @@ class MainFrame(Frame):
                 selected_courses.append(selection)
 
     def submitCourses(self):
-        self.newWindow = Toplevel(self.master)
-        self.app = callback(self.newWindow, self.studentId)
-        return
+        if len(selected_courses) == 5:
+            self.newWindow = Toplevel(self.master)
+            self.app = callback(self.newWindow, self.studentId)
+            return
+        else:
+            print("Please select " + str((5 - len(selected_courses))) + " more course(s)")
+
+    def removeCourse(self):
+        if len(selected_courses) >= 1 and len(selected_courses) <= 5:
+            selection = self.selectedCoursesBox.get(self.selectedCoursesBox.curselection()[0])
+            self.selectedCoursesBox.delete(ANCHOR)
+            selected_courses.remove(selection)
+        else:
+            return
+        
 
 class callback(Frame):
     def __init__(self, parent, studentId):
@@ -113,7 +130,7 @@ class callback(Frame):
         noButton.grid(row = 2, column = 0)
 
     def confirmCourses(self):
-        s.addStudentCourses(self.studentId, str(selected_courses))
+        s.addStudentCourses(self.studentId, selected_courses)
         self.parent.destroy()
         
         

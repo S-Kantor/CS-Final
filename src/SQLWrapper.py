@@ -39,7 +39,7 @@ class SQLWrapper:
 
         Adds all courses for Students to choose from
         """
-        statement = "UPDATE Students SET selectedCourses = '%s' WHERE studentId = %s" % (repr(selectedCourses), studentId)
+        statement = 'UPDATE Students SET selectedCourses = "%s" WHERE studentId = %s' % (repr(selectedCourses), studentId)
         print (statement)
         self.cursor.execute(statement)
         self.con.commit()
