@@ -8,12 +8,16 @@
 #########################################
 
 from tkinter import *
+from SQLWrapper import *
+s = SQLWrapper()
 
 class MainFrame(Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, studentId):
         Frame.__init__(self, parent)
 
         self.parent = parent
+
+        self.studentId = 2
 
         self.initUI()
 
@@ -86,19 +90,23 @@ class MainFrame(Frame):
         Box1ID.grid(row=1, column=2, sticky=S)
         
         scroller1 = Scrollbar(self, orient="vertical")
-        Box1 = Listbox(self, width=30, height=20, yscrollcommand=scroller1.set)
-        scroller1.config(command=Box1.yview)
+        self.Box1 = Listbox(self, width=30, height=20, yscrollcommand=scroller1.set)
+        scroller1.config(command=self.Box1.yview)
 
-        Box1.grid(row=2, column=2, rowspan=5)
+        self.Box1.grid(row=2, column=2, rowspan=5)
         scroller1.grid(sticky=E, row = 2, rowspan=5, column = 1, ipady = 138)
 
         loginButton = Button(self, text="Choose Course")
         loginButton.grid(row=7, column=2)
+
+        for course in s.getStudent(self.studentId):
+            self.Box1.insert(END, course.name)
+
         
 def main():
     root = Tk()
     root.geometry("600x450+300+300")
-    app = MainFrame(root)
+    app = MainFrame(root, 2)
     root.mainloop()
 
 if __name__ == '__main__':

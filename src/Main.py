@@ -21,7 +21,7 @@ class MainFrame(Frame):
         self.studentId = studentId
 
     def initUI(self):
-        self.parent.geometry("450x400+400+400")
+        self.parent.geometry("650x425+400+200")
         self.parent.title("Course Selection Screen")
         self.parent.resizable(width=TRUE, height=TRUE)
 
@@ -108,7 +108,7 @@ class callback(Frame):
         x = (screenWidth / 2) - (300 / 2)
         y = (screenHeight / 2) - (300 / 2)
 
-        self.parent.geometry('%dx%d+%d+%d' % (300, 300, x, y))
+        self.parent.geometry('%dx%d+%d+%d' % (300, 100, x, y))
 
     def initUI(self):
         self.center_window()
@@ -126,18 +126,21 @@ class callback(Frame):
         yesButton = Button(self, text = "Yes", command = self.confirmCourses)
         yesButton.grid(row = 1, column = 0)
 
-        noButton = Button(self, text = "No")
+        noButton = Button(self, text = "No", command = self.no)
         noButton.grid(row = 2, column = 0)
 
     def confirmCourses(self):
         s.addStudentCourses(self.studentId, selected_courses)
+        self.parent.destroy()
+
+    def no(self):
         self.parent.destroy()
         
         
 def main():
     root = Tk()
     root.geometry("450x400+400+400")
-    app = MainFrame(root)
+    app = MainFrame(root, 2)
     root.mainloop()
 
 if __name__ == '__main__':
