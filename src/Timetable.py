@@ -17,7 +17,7 @@ class MainFrame(Frame):
 
         self.parent = parent
 
-        self.studentId = 2
+        self.studentId = studentId
 
         self.initUI()
 
@@ -46,8 +46,8 @@ class MainFrame(Frame):
         Box1ID = Label(self, text="Semester 1:")
         Box1ID.grid(row=1, column=0, sticky=S)
 
-        Button_1Left = Button(self,text="")
-        Button_1Left.grid(row=2, column=0)
+        self.Button_1Left = Button(self,text="", command = self.selectCourse)
+        self.Button_1Left.grid(row=2, column=0)
 
         Button_2Left = Button(self,text="")
         Button_2Left.grid(row=3, column=0)
@@ -99,8 +99,13 @@ class MainFrame(Frame):
         loginButton = Button(self, text="Choose Course")
         loginButton.grid(row=7, column=2)
 
-        for course in s.getStudent(self.studentId):
-            self.Box1.insert(END, course.name)
+        for course in eval(s.getStudent(self.studentId).selectedCourses):
+            self.Box1.insert(END, course)
+
+    def selectCourse(self):
+        selection = self.Box1.get(self.Box1.curselection()[0])
+        self.Button_1Left["text"] = selection
+        self.pack()
 
         
 def main():
