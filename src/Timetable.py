@@ -42,24 +42,28 @@ class MainFrame(Frame):
         idLabel.grid(row=0, columnspan=20, column=0, sticky=S)
 
         #####
+        #for column in range(0,1):
+            #for row in range(2, 6):
         
         Box1ID = Label(self, text="Semester 1:")
         Box1ID.grid(row=1, column=0, sticky=S)
 
-        self.Button_1Left = Button(self,text="", command = self.selectCourse)
+        self.Button_1Left = Button(self,text="", command = self.selectCourse1)
         self.Button_1Left.grid(row=2, column=0)
 
-        Button_2Left = Button(self,text="")
-        Button_2Left.grid(row=3, column=0)
+        self.Button_2Left = Button(self,text="", command = self.selectCourse1)
+        self.Button_2Left.grid(row=3, column=0)
 
-        Button_3Left = Button(self,text="")
-        Button_3Left.grid(row=4, column=0)
+        self.Button_3Left = Button(self,text="", command = self.selectCourse1)
+        self.Button_3Left.grid(row=4, column=0)
 
-        Button_4Left = Button(self,text="")
-        Button_4Left.grid(row=5, column=0)
+        self.Button_4Left = Button(self,text="", command = self.selectCourse1)
+        self.Button_4Left.grid(row=5, column=0)
 
-        Button_5Left = Button(self,text="")
-        Button_5Left.grid(row=6, column=0)
+        self.Button_5Left = Button(self,text="", command = self.selectCourse1)
+        self.Button_5Left.grid(row=6, column=0)
+
+        self.semester1 = [self.Button_1Left, self.Button_2Left, self.Button_3Left, self.Button_4Left, self.Button_5Left]
         
         
         #####
@@ -102,9 +106,10 @@ class MainFrame(Frame):
         for course in eval(s.getStudent(self.studentId).selectedCourses):
             self.Box1.insert(END, course)
 
-    def selectCourse(self):
+    def selectCourse1(self):
         selection = self.Box1.get(self.Box1.curselection()[0])
-        self.Button_1Left["text"] = selection
+        for i in self.semester1:
+            self.semester1[i-1]["text"] = selection
         self.pack()
 
         
