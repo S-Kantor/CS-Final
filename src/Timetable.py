@@ -10,6 +10,7 @@
 from tkinter import *
 from SQLWrapper import *
 s = SQLWrapper()
+selected_courses = []
 
 class MainFrame(Frame):
     def __init__(self, parent, studentId):
@@ -48,22 +49,22 @@ class MainFrame(Frame):
         Box1ID = Label(self, text="Semester 1:")
         Box1ID.grid(row=1, column=0, sticky=S)
 
-        self.Button_1Left = Button(self,text="", command = self.selectCourse1)
+        self.Button_1Left = Button(self,text="", command = self.selectPeriod1)
         self.Button_1Left.grid(row=2, column=0)
 
-        self.Button_2Left = Button(self,text="", command = self.selectCourse1)
+        self.Button_2Left = Button(self,text="", command = self.selectPeriod2)
         self.Button_2Left.grid(row=3, column=0)
 
-        self.Button_3Left = Button(self,text="", command = self.selectCourse1)
+        self.Button_3Left = Button(self,text="", command = self.selectPeriod3)
         self.Button_3Left.grid(row=4, column=0)
 
-        self.Button_4Left = Button(self,text="", command = self.selectCourse1)
+        self.Button_4Left = Button(self,text="", command = self.selectPeriod4)
         self.Button_4Left.grid(row=5, column=0)
 
-        self.Button_5Left = Button(self,text="", command = self.selectCourse1)
+        self.Button_5Left = Button(self,text="", command = self.selectPeriod5)
         self.Button_5Left.grid(row=6, column=0)
 
-        self.semester1 = [self.Button_1Left, self.Button_2Left, self.Button_3Left, self.Button_4Left, self.Button_5Left]
+        #self.semester1 = [self.Button_1Left, self.Button_2Left, self.Button_3Left, self.Button_4Left, self.Button_5Left]
         
         
         #####
@@ -71,20 +72,20 @@ class MainFrame(Frame):
         Box2ID = Label(self, text="Semester 2:")
         Box2ID.grid(row=1, column=1, sticky=S)
 
-        Button_1Right = Button(self,text="")
-        Button_1Right.grid(row=2, column=1)
+        self.Button_1Right = Button(self,text="", command = self.selectPeriod6)
+        self.Button_1Right.grid(row=2, column=1)
 
-        Button_2Right = Button(self,text="")
-        Button_2Right.grid(row=3, column=1)
+        self.Button_2Right = Button(self,text="", command = self.selectPeriod7)
+        self.Button_2Right.grid(row=3, column=1)
 
-        Button_3Right = Button(self,text="")
-        Button_3Right.grid(row=4, column=1)
+        self.Button_3Right = Button(self,text="", command = self.selectPeriod8)
+        self.Button_3Right.grid(row=4, column=1)
 
-        Button_4Right = Button(self,text="")
-        Button_4Right.grid(row=5, column=1)
+        self.Button_4Right = Button(self,text="", command = self.selectPeriod9)
+        self.Button_4Right.grid(row=5, column=1)
 
-        Button_5Right = Button(self,text="")
-        Button_5Right.grid(row=6, column=1)
+        self.Button_5Right = Button(self,text="", command = self.selectPeriod10)
+        self.Button_5Right.grid(row=6, column=1)
 
         submitButton = Button(self, text="Submit")
         submitButton.grid(row=7, column=0, columnspan=2)
@@ -103,14 +104,135 @@ class MainFrame(Frame):
         loginButton = Button(self, text="Choose Course")
         loginButton.grid(row=7, column=2)
 
-        for course in eval(s.getStudent(self.studentId).selectedCourses):
-            self.Box1.insert(END, course)
+        self.selected_courses = eval(s.getStudent(self.studentId).selectedCourses)
 
-    def selectCourse1(self):
-        selection = self.Box1.get(self.Box1.curselection()[0])
-        for i in self.semester1:
-            self.semester1[i-1]["text"] = selection
-        self.pack()
+        for course in self.selected_courses:
+            self.Box1.insert(END, course)
+            
+
+    #def selectCourse1(self):
+        #selection = self.Box1.get(self.Box1.curselection()[0])
+        #for i in self.semester1:
+            #self.semester1[i-1]["text"] = selection
+        #self.pack()
+
+    def removeFromListbox(self, selection):
+        self.selected_courses.remove(selection)
+        self.Box1.delete(ANCHOR)
+
+    #def removeFromButton(self, selection):
+        #self.Box1.insert(selection)
+        #self.Button["text"] = ""
+
+    def selectPeriod1(self):
+        if self.Button_1Left["text"] != "":
+            selection = self.Button_1Left["text"]
+            self.Box1.insert(END, selection)
+            self.Button_1Left["text"] = ""
+            self.selected_courses.append(selection)
+        else:
+            selection = self.Box1.get(self.Box1.curselection()[0])
+            self.Button_1Left["text"] = selection
+            self.removeFromListbox(selection)
+
+    def selectPeriod2(self):
+        if self.Button_2Left["text"] != "":
+            selection = self.Button_2Left["text"]
+            self.Box1.insert(END, selection)
+            self.Button_2Left["text"] = ""
+            self.selected_courses.append(selection)
+        else:
+            selection = self.Box1.get(self.Box1.curselection()[0])
+            self.Button_2Left["text"] = selection
+            self.removeFromListbox(selection)
+
+    def selectPeriod3(self):
+        if self.Button_3Left["text"] != "":
+            selection = self.Button_3Left["text"]
+            self.Box1.insert(END, selection)
+            self.Button_3Left["text"] = ""
+            self.selected_courses.append(selection)
+        else:
+            selection = self.Box1.get(self.Box1.curselection()[0])
+            self.Button_3Left["text"] = selection
+            self.removeFromListbox(selection)
+
+    def selectPeriod4(self):
+        if self.Button_4Left["text"] != "":
+            selection = self.Button_4Left["text"]
+            self.Box1.insert(END, selection)
+            self.Button_4Left["text"] = ""
+            self.selected_courses.append(selection)
+        else:
+            selection = self.Box1.get(self.Box1.curselection()[0])
+            self.Button_4Left["text"] = selection
+            self.removeFromListbox(selection)
+
+    def selectPeriod5(self):
+        if self.Button_5Left["text"] != "":
+            selection = self.Button_5Left["text"]
+            self.Box1.insert(END, selection)
+            self.Button_5Left["text"] = ""
+            self.selected_courses.append(selection)
+        else:
+            selection = self.Box1.get(self.Box1.curselection()[0])
+            self.Button_5Left["text"] = selection
+            self.removeFromListbox(selection)
+
+    def selectPeriod6(self):
+        if self.Button_1Right["text"] != "":
+            selection = self.Button_1Right["text"]
+            self.Box1.insert(END, selection)
+            self.Button_1Right["text"] = ""
+            self.selected_courses.append(selection)
+        else:
+            selection = self.Box1.get(self.Box1.curselection()[0])
+            self.Button_1Right["text"] = selection
+            self.removeFromListbox(selection)
+
+    def selectPeriod7(self):
+        if self.Button_2Right["text"] != "":
+            selection = self.Button_2Right["text"]
+            self.Box1.insert(END, selection)
+            self.Button_2Right["text"] = ""
+            self.selected_courses.append(selection)
+        else:
+            selection = self.Box1.get(self.Box1.curselection()[0])
+            self.Button_2Right["text"] = selection
+            self.removeFromListbox(selection)
+
+    def selectPeriod8(self):
+        if self.Button_3Right["text"] != "":
+            selection = self.Button_3Right["text"]
+            self.Box1.insert(END, selection)
+            self.Button_3Right["text"] = ""
+            self.selected_courses.append(selection)
+        else:
+            selection = self.Box3.get(self.Box1.curselection()[0])
+            self.Button_1Right["text"] = selection
+            self.removeFromListbox(selection)
+
+    def selectPeriod9(self):
+        if self.Button_4Right["text"] != "":
+            selection = self.Button_4Right["text"]
+            self.Box1.insert(END, selection)
+            self.Button_4Right["text"] = ""
+            self.selected_courses.append(selection)
+        else:
+            selection = self.Box1.get(self.Box1.curselection()[0])
+            self.Button_4Right["text"] = selection
+            self.removeFromListbox(selection)
+
+    def selectPeriod10(self):
+        if self.Button_5Right["text"] != "":
+            selection = self.Button_5Right["text"]
+            self.Box1.insert(END, selection)
+            self.Button_5Right["text"] = ""
+            self.selected_courses.append(selection)
+        else:
+            selection = self.Box1.get(self.Box1.curselection()[0])
+            self.Button_5Right["text"] = selection
+            self.removeFromListbox(selection)
 
         
 def main():

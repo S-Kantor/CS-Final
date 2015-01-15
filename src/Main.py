@@ -7,6 +7,7 @@
 
 from tkinter import *
 from SQLWrapper import *
+from Timetable import *
 s = SQLWrapper()
 selected_courses = []
 
@@ -131,7 +132,9 @@ class callback(Frame):
 
     def confirmCourses(self):
         s.addStudentCourses(self.studentId, selected_courses)
-        self.parent.destroy()
+        self.destroy()
+        MainFrame(root, student.studentId)
+        
 
     def no(self):
         self.parent.destroy()
