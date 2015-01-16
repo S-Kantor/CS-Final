@@ -12,10 +12,11 @@ s = SQLWrapper()
 selected_courses = []
 
 class MainFrame(Frame):
-    def __init__(self, parent, studentId):
+    def __init__(self, parent, studentId, app):
         Frame.__init__(self, parent)
 
         self.parent = parent
+        self.app = app
 
         self.initUI()
 
@@ -81,7 +82,7 @@ class MainFrame(Frame):
     def submitCourses(self):
         if len(selected_courses) == 5:
             self.newWindow = Toplevel(self.master)
-            self.app = callback(self.newWindow, self.studentId)
+            self.app = ConfirmFrame(self.newWindow, self.studentId)
             return
         else:
             print("Please select " + str((5 - len(selected_courses))) + " more course(s)")
@@ -95,7 +96,7 @@ class MainFrame(Frame):
             return
         
 
-class callback(Frame):
+class ConfirmFrame(Frame):
     def __init__(self, parent, studentId):
         Frame.__init__(self, parent)
         self.parent = parent
@@ -121,22 +122,22 @@ class callback(Frame):
         self.rowconfigure(1, weight = 1)
         self.rowconfigure(2, weight = 1)
 
-        callbackLabel = Label(self, text = "Are you sure you want to select these courses?", font = (16))
-        callbackLabel.grid(row = 0, column = 0, sticky = S)
+        ConfirmFrameLabel = Label(self, text = "Are you sure you want to select these courses?", font = (16))
+        ConfirmFrameLabel.grid(row = 0, column = 0, sticky = S)
         
         yesButton = Button(self, text = "Yes", command = self.confirmCourses)
         yesButton.grid(row = 1, column = 0)
 
-        noButton = Button(self, text = "No", command = self.no)
+        noButton = Button(self, text = "No", command = self.cancelCourses)
         noButton.grid(row = 2, column = 0)
 
     def confirmCourses(self):
         s.addStudentCourses(self.studentId, selected_courses)
         self.destroy()
-        MainFrame(root, student.studentId)
+        TimetableFrame(self.parent, self.studentId)
         
 
-    def no(self):
+    def cancelCourses(self):
         self.parent.destroy()
         
         

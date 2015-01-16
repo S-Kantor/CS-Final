@@ -12,7 +12,7 @@ from SQLWrapper import *
 s = SQLWrapper()
 selected_courses = []
 
-class MainFrame(Frame):
+class TimetableFrame(Frame):
     def __init__(self, parent, studentId):
         Frame.__init__(self, parent)
 
@@ -24,7 +24,6 @@ class MainFrame(Frame):
 
     def initUI(self):
         self.parent.title("Semester Organizer")
-        self.parent.resizable(width=FALSE, height=FALSE)
         self.pack(fill=BOTH, expand=1)
 
         self.columnconfigure(0, weight=1)
@@ -238,7 +237,7 @@ class MainFrame(Frame):
 def main():
     root = Tk()
     root.geometry("600x450+300+300")
-    app = MainFrame(root, 2)
+    app = TimetableFrame(root, 2)
     root.mainloop()
 
 if __name__ == '__main__':

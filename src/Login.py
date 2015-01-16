@@ -70,7 +70,7 @@ class LoginFrame(Frame):
             print("Login Successful")
             # Destroy the LoginFrame and create a MainFrame to replace it
             self.destroy()
-            MainFrame(root, student.studentId)
+            self.app = MainFrame(root, student.studentId, self.app)
         else:
             print("Incorrect Credentials")
             
