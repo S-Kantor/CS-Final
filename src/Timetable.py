@@ -11,7 +11,6 @@ from tkinter import *
 from SQLWrapper import *
 s = SQLWrapper()
 selected_courses = []
-final_courses = [self.Button_1Left["text"], self.Button_2Left["text"], self.Button_3Left["text"], self.Button_4Left["text"], self.Button_5Left["text"], self.Button_1Right["text"], self.Button_2Right["text"], self.Button_3Right["text"], self.Button_4Right["text"], self.Button_5Right["text"]]
 
 class TimetableFrame(Frame):
     def __init__(self, parent, studentId):
@@ -235,17 +234,20 @@ class TimetableFrame(Frame):
             self.removeFromListbox(selection)
 
     def submitCourses(self):
+        self.final_courses = [self.Button_1Left["text"], self.Button_2Left["text"], self.Button_3Left["text"], self.Button_4Left["text"], self.Button_5Left["text"], self.Button_1Right["text"], self.Button_2Right["text"], self.Button_3Right["text"], self.Button_4Right["text"], self.Button_5Right["text"]]
         if len(self.selected_courses) == 0:
             self.newWindow = Toplevel(self.master)
-            self.app = Confirm(self.newWindow, self.studentId)
+            self.app = Confirm(self.newWindow, self.studentId, self.final_courses)
+            
 
 
 class Confirm(Frame):
-    def __init__(self, parent, studentId):
+    def __init__(self, parent, studentId, courses):
         Frame.__init__(self, parent)
         self.parent = parent
         self.initUI()
         self.studentId = studentId
+        self.courses = courses
 
     def center_window(self):
         screenWidth = self.parent.winfo_screenwidth()
@@ -276,9 +278,8 @@ class Confirm(Frame):
         noButton.grid(row = 2, column = 0)
 
     def confirmCourses(self):
+        s.addFinalCourses(self.studentId, self.courses)
         self.parent.destroy()
-        s.addStudentCourses(self.studentId, final_courses)
-        print(final_courses)
 
     def cancelCourses(self):
         self.parent.destroy()

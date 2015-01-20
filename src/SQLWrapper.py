@@ -12,7 +12,7 @@ class SQLWrapper:
         """
         Creates a table to store student data
         """
-        statement = "CREATE TABLE Students (studentId INTEGER, grade INTEGER, selectedCourses TEXT, availableCourses TEXT, passwordHash TEXT)"
+        statement = "CREATE TABLE Students (studentId INTEGER, grade INTEGER, selectedCourses TEXT, availableCourses TEXT, passwordHash TEXT, finalCourses TEXT)"
         self.cursor.execute(statement)
         self.con.commit()
         
@@ -29,7 +29,7 @@ class SQLWrapper:
 
         Adds a student into the database
         """
-        statement = "INSERT INTO Students VALUES (%s, %s, '%s', '%s', '%s')" % (studentId, grade, None, None, passwordHash)
+        statement = "INSERT INTO Students VALUES (%s, %s, '%s', '%s', '%s', '%s')" % (studentId, grade, None, None, passwordHash, None)
         self.cursor.execute(statement)
         self.con.commit()
         
@@ -103,10 +103,22 @@ class SQLWrapper:
         return students
 
     def parseStudent(self, row):
-        return Student.Student(row[0], row[1], row[2], row[3], row[4])
+        return Student.Student(row[0], row[1], row[2], row[3], row[4], row[5])
 
     def parseCourse(self, row):
         return Course.Course(row[0], row[1], row[2])
+
+    def addFinalCourses(self, studentId, finalCourses):
+        statement = 'UPDATE Students SET finalCourses = "%s" WHERE studentId = %s' % (repr(finalCourses), studentId)
+        print(statement)
+        self.cursor.execute(statement)
+        self.con.commit()
+
+    def getFinalCourses(self, studentId, finalCourses):
+        statement = 'SELECT * FROM finalcourses WHERE studentId = %s' %(studentId)
+        self.cursor.execute(statement)
+        self.con.commit()s
+
 
 
 
