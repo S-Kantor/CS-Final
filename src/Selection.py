@@ -74,21 +74,21 @@ class SelectionFrame(Frame):
 
     def chooseCourse(self):
         selection = self.availableCoursesBox.get(self.availableCoursesBox.curselection()[0]) # get selected string
-        if len(selected_courses) < 5 and selection not in selected_courses:           
+        if selection not in selected_courses:           
             if len(selection) > 0:
                 self.selectedCoursesBox.insert(END, selection)
                 selected_courses.append(selection)
 
     def submitCourses(self):
-        if len(selected_courses) == 5:
+        if len(selected_courses) >= 6:
             self.newWindow = Toplevel(self.master)
             self.app = ConfirmFrame(self.newWindow, self.studentId)
             return
         else:
-            print("Please select " + str((5 - len(selected_courses))) + " more course(s)")
+            print("Please select " + str((6 - len(selected_courses))) + " more course(s)")
 
     def removeCourse(self):
-        if len(selected_courses) >= 1 and len(selected_courses) <= 5:
+        if len(selected_courses) >= 1 and len(selected_courses) <= 6:
             selection = self.selectedCoursesBox.get(self.selectedCoursesBox.curselection()[0])
             self.selectedCoursesBox.delete(ANCHOR)
             selected_courses.remove(selection)

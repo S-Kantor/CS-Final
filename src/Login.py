@@ -7,6 +7,7 @@
 from tkinter import *
 from SQLWrapper import *
 from Selection import *
+from final_timetable import *
 s = SQLWrapper()
 root = Tk()
 app = None
@@ -69,8 +70,13 @@ class LoginFrame(Frame):
         if student != None and student.passwordHash == self.passwordText.get():
             print("Login Successful")
             # Destroy the LoginFrame and create a SelectionFrame to replace it
-            self.destroy()
-            self.app = SelectionFrame(root, student.studentId, self.app)
+            print(student.finalCourses)
+            if student.finalCourses == "None":
+                self.destroy()
+                SelectionFrame(root, student.studentId, self.app)
+            else:
+                self.destroy()
+                FinalTimetableFrame(root, student.studentId)
         else:
             print("Incorrect Credentials")
 

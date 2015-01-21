@@ -23,6 +23,7 @@ class TimetableFrame(Frame):
         self.initUI()
 
     def initUI(self):
+        self.parent.geometry("650x450+300+300")
         self.parent.title("Semester Organizer")
         self.pack(fill=BOTH, expand=1)
 
@@ -99,9 +100,6 @@ class TimetableFrame(Frame):
 
         self.Box1.grid(row=2, column=2, rowspan=5)
         scroller1.grid(sticky=E, row = 2, rowspan=5, column = 1, ipady = 138)
-
-        loginButton = Button(self, text="Choose Course")
-        loginButton.grid(row=7, column=2)
 
         self.selected_courses = eval(s.getStudent(self.studentId).selectedCourses)
 
@@ -287,7 +285,7 @@ class Confirm(Frame):
         
 def main():
     root = Tk()
-    root.geometry("600x450+300+300")
+    #root.geometry("600x450+300+300")
     app = TimetableFrame(root, 2)
     root.mainloop()
 
