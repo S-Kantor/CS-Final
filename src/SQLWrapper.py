@@ -12,7 +12,7 @@ class SQLWrapper:
         """
         Creates a table to store student data
         """
-        statement = "CREATE TABLE Students (studentId INTEGER, grade INTEGER, selectedCourses TEXT, availableCourses TEXT, passwordHash TEXT, finalCourses TEXT)"
+        statement = "CREATE TABLE IF NOT EXISTS Students (studentId INTEGER, grade INTEGER, selectedCourses TEXT, availableCourses TEXT, passwordHash TEXT, finalCourses TEXT)"
         self.cursor.execute(statement)
         self.con.commit()
         
@@ -20,9 +20,29 @@ class SQLWrapper:
         """
         Creates a courses table
         """
-        statement = "CREATE TABLE Courses (courseId INTEGER, name TEXT, priority INTEGER)"
+        statement = "CREATE TABLE IF NOT EXISTS Courses (courseId INTEGER, name TEXT, priority INTEGER)"
         self.cursor.execute(statement)
         self.con.commit()
+
+    def generateCourses(self):
+        """
+        Generates courses for the courses table
+        """
+        if len(self.getAllCourses()) > 0:
+            return
+        
+        Courses = ["English", "Math", "Comp Sci", "Entrepreneurship",
+               "Accounting", "History", "Geography", "Music",
+               "Religion"] #List of Courses
+
+        #Adds courses with different priorities
+        i = 0
+        for i in range (0,2):
+            self.addCourse(i + 1, Courses[i], 3)
+        for i in range (0,5):
+            self.addCourse(i + 3, Courses[i+2], 2)
+        for i in range (0,2):
+            self.addCourse(i+8, Courses[i+7],1)
 
     def addStudent(self, studentId, grade, passwordHash):
         """ (int, int, str) -> (none)
@@ -117,7 +137,7 @@ class SQLWrapper:
     def getFinalCourses(self, studentId, finalCourses):
         statement = 'SELECT * FROM finalcourses WHERE studentId = %s' %(studentId)
         self.cursor.execute(statement)
-        self.con.commit()s
+        self.con.commit()
 
 
 

@@ -11,7 +11,7 @@ from Timetable import *
 s = SQLWrapper()
 selected_courses = []
 
-class MainFrame(Frame):
+class SelectionFrame(Frame):
     def __init__(self, parent, studentId, app):
         Frame.__init__(self, parent)
 

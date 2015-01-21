@@ -6,7 +6,7 @@
 
 from tkinter import *
 from SQLWrapper import *
-from Main import *
+from Selection import *
 s = SQLWrapper()
 root = Tk()
 app = None
@@ -68,12 +68,11 @@ class LoginFrame(Frame):
         student = s.getStudent(self.idText.get())
         if student != None and student.passwordHash == self.passwordText.get():
             print("Login Successful")
-            # Destroy the LoginFrame and create a MainFrame to replace it
+            # Destroy the LoginFrame and create a SelectionFrame to replace it
             self.destroy()
-            self.app = MainFrame(root, student.studentId, self.app)
+            self.app = SelectionFrame(root, student.studentId, self.app)
         else:
             print("Incorrect Credentials")
-            
 
     def create_account(self):
         self.newWindow = Toplevel(self.master)
