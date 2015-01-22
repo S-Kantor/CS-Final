@@ -7,7 +7,7 @@
 from tkinter import *
 from SQLWrapper import *
 from Selection import *
-from final_timetable import *
+from PreviewTimetable import *
 s = SQLWrapper()
 root = Tk()
 app = None
@@ -65,7 +65,7 @@ class LoginFrame(Frame):
         createButton = Button(self, text="Create Account", command = self.create_account)
         createButton.grid(row=6, column=0)
         
-    def login(self):
+    def login(self): #function to check if the information entered is valid
         student = s.getStudent(self.idText.get())
         if student != None and student.passwordHash == self.passwordText.get():
             print("Login Successful")
@@ -80,7 +80,7 @@ class LoginFrame(Frame):
         else:
             print("Incorrect Credentials")
 
-    def create_account(self):
+    def create_account(self): #creates an account for the user
         self.newWindow = Toplevel(self.master)
         self.app = CreateAccountFrame(self.newWindow)
         return
@@ -140,9 +140,14 @@ class CreateAccountFrame(Frame):
         createAccButton = Button(self, text="Create Account", command = self.create_account)
         createAccButton.grid(row=7, column=0)
 
-    def create_account(self):
-        s.addStudent(self.idText.get(), self.variable.get(), self.passwordText.get())
-        self.parent.destroy()
+    def create_account(self): #checks if the given credentials can be used to make a new account, and makes one if the information isn't used
+        if len(self.passwordText.get()) == 0:
+            print("Please enter a password")
+        elif s.getStudent(self.idText.get()) != None:
+            print("Student ID already in use")
+        else:
+            s.addStudent(self.idText.get(), self.variable.get(), self.passwordText.get())
+            self.parent.destroy()
     
 def main():
     window = LoginFrame(root, None)

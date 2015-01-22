@@ -49,6 +49,7 @@ class TimetableFrame(Frame):
         Box1ID = Label(self, text="Semester 1:")
         Box1ID.grid(row=1, column=0, sticky=S)
 
+        #Buttons for each period slot on the timetable
         self.Button_1Left = Button(self,text="Spare", command = self.selectPeriod1)
         self.Button_1Left.grid(row=2, column=0)
 
@@ -63,8 +64,6 @@ class TimetableFrame(Frame):
 
         self.Button_5Left = Button(self,text="Spare", command = self.selectPeriod5)
         self.Button_5Left.grid(row=6, column=0)
-
-        #self.semester1 = [self.Button_1Left, self.Button_2Left, self.Button_3Left, self.Button_4Left, self.Button_5Left]
         
         
         #####
@@ -121,6 +120,7 @@ class TimetableFrame(Frame):
         #self.Box1.insert(selection)
         #self.Button["text"] = ""
 
+    #functions to select where you want to put a course on the timetable
     def selectPeriod1(self):
         if self.Button_1Left["text"] != "Spare":
             selection = self.Button_1Left["text"]
@@ -231,7 +231,7 @@ class TimetableFrame(Frame):
             self.Button_5Right["text"] = selection
             self.removeFromListbox(selection)
 
-    def submitCourses(self):
+    def submitCourses(self): #submits the timetable schedule and creates a final course list for the student
         self.final_courses = [self.Button_1Left["text"], self.Button_2Left["text"], self.Button_3Left["text"], self.Button_4Left["text"], self.Button_5Left["text"], self.Button_1Right["text"], self.Button_2Right["text"], self.Button_3Right["text"], self.Button_4Right["text"], self.Button_5Right["text"]]
         if len(self.selected_courses) == 0:
             self.newWindow = Toplevel(self.master)
@@ -275,7 +275,7 @@ class Confirm(Frame):
         noButton = Button(self, text = "No", command = self.cancelCourses)
         noButton.grid(row = 2, column = 0)
 
-    def confirmCourses(self):
+    def confirmCourses(self): #confirms your final courses and stores it in the database
         s.addFinalCourses(self.studentId, self.courses)
         self.parent.destroy()
 

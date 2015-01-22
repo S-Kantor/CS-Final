@@ -5,7 +5,7 @@ import Student
 class SQLWrapper:
 
     def __init__(self):
-        self.con = sqlite3.connect('test.db')
+        self.con = sqlite3.connect('timetable.db')
         self.cursor = self.con.cursor()
 
     def createStudentsTable(self):

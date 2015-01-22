@@ -26,7 +26,7 @@ class FinalTimetableFrame(Frame):
         self.initUI()
 
     def initUI(self):
-        self.parent.geometry("650x450+300+300")
+        self.parent.geometry("650x450+300+300") #window size
         self.parent.title("Semester Organizer")
         self.pack(fill=BOTH, expand=1)
 
@@ -49,6 +49,7 @@ class FinalTimetableFrame(Frame):
         Box1ID = Label(self, text="Semester 1:")
         Box1ID.grid(row=1, column=0, sticky=S)
 
+        #Non-functioning buttons for each period slot on the timetable
         self.Button_1Left = Button(self,text=self.finalCourses[0])
         self.Button_1Left.grid(row=2, column=0)
 

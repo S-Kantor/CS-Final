@@ -72,14 +72,14 @@ class SelectionFrame(Frame):
 
         self.pack()
 
-    def chooseCourse(self):
+    def chooseCourse(self): #adds a course to your selected courses
         selection = self.availableCoursesBox.get(self.availableCoursesBox.curselection()[0]) # get selected string
         if selection not in selected_courses:           
             if len(selection) > 0:
                 self.selectedCoursesBox.insert(END, selection)
                 selected_courses.append(selection)
 
-    def submitCourses(self):
+    def submitCourses(self): #submits the selected courses and stores it in the database
         if len(selected_courses) >= 6:
             self.newWindow = Toplevel(self.master)
             self.app = ConfirmFrame(self.newWindow, self.studentId)
@@ -87,7 +87,7 @@ class SelectionFrame(Frame):
         else:
             print("Please select " + str((6 - len(selected_courses))) + " more course(s)")
 
-    def removeCourse(self):
+    def removeCourse(self): #removes a course from the selected courses
         if len(selected_courses) >= 1 and len(selected_courses) <= 6:
             selection = self.selectedCoursesBox.get(self.selectedCoursesBox.curselection()[0])
             self.selectedCoursesBox.delete(ANCHOR)
@@ -131,7 +131,7 @@ class ConfirmFrame(Frame):
         noButton = Button(self, text = "No", command = self.cancelCourses)
         noButton.grid(row = 2, column = 0)
 
-    def confirmCourses(self):
+    def confirmCourses(self): #finalizes the selected courses, and opens up the timetable creator 
         s.addStudentCourses(self.studentId, selected_courses)
         self.destroy()
         TimetableFrame(self.parent, self.studentId)
