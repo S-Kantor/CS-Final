@@ -75,7 +75,7 @@ class LoginFrame(Frame):
         loginButton.grid(row=5, column=0)
 
         # Create account button
-        createButton = Button(self, text="Create Account", command = self.create_account)
+        createButton = Button(self, text="Create Account", command = self.createAccount)
         createButton.grid(row=6, column=0)
         
     def login(self):
@@ -103,7 +103,7 @@ class LoginFrame(Frame):
         else:
             messagebox.showerror("Error", "Incorrect credentials!")
 
-    def create_account(self):
+    def createAccount(self):
         '''Called from createButton.
         Initializes a CreateAccountFrame.
         '''
@@ -177,10 +177,10 @@ class CreateAccountFrame(Frame):
         self.gradeSelection.grid(row=6, column=0, sticky=N)
 
         # Create Account button
-        createAccButton = Button(self, text="Create Account", command = self.create_account)
+        createAccButton = Button(self, text="Create Account", command = self.createAccount)
         createAccButton.grid(row=7, column=0)
 
-    def create_account(self): #checks if the given credentials can be used to make a new account, and makes one if the information isn't used
+    def createAccount(self): #checks if the given credentials can be used to make a new account, and makes one if the information isn't used
         if len(self.passwordText.get()) == 0:
             messagebox.showinfo("Info", "Please enter a password.")
         elif sqlWrapper.getStudent(self.idText.get()) != None:

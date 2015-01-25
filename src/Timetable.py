@@ -38,6 +38,9 @@ class TimetableFrame(Frame):
         self.centerWindow()
         self.pack(fill=BOTH, expand=1)
 
+        # Make the window resizable
+        self.parent.resizable(width=TRUE, height=TRUE)
+
         # Configure table layout
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
@@ -52,8 +55,8 @@ class TimetableFrame(Frame):
         self.rowconfigure(7, weight=1)
 
         # Timetable title
-        idLabel = Label(self, text="Timetable", font=(26))
-        idLabel.grid(row=0, columnspan=20, column=0, sticky=S)
+        timetableLabel = Label(self, text="Timetable", font=(26))
+        timetableLabel.grid(row=0, columnspan=20, column=0, sticky=S)
         
         semster1 = Label(self, text="Semester 1:")
         semster1.grid(row=1, column=0, sticky=S)
@@ -73,12 +76,9 @@ class TimetableFrame(Frame):
 
         self.sem1period5 = Button(self,text="Spare", command = self.selectPeriod5)
         self.sem1period5.grid(row=6, column=0)
-        
-        
-        #####
 
-        Box2ID = Label(self, text="Semester 2:")
-        Box2ID.grid(row=1, column=1, sticky=S)
+        semester2 = Label(self, text="Semester 2:")
+        semester2.grid(row=1, column=1, sticky=S)
 
         self.sem2period1 = Button(self,text="Spare", command = self.selectPeriod6)
         self.sem2period1.grid(row=2, column=1)
@@ -98,17 +98,20 @@ class TimetableFrame(Frame):
         submitButton = Button(self, text="Submit", command = self.submitCourses)
         submitButton.grid(row=7, column=0, columnspan=2)
         
-        #####
         selectedCoursesLabel = Label(self, text="Course List:")
         selectedCoursesLabel.grid(row=1, column=2, sticky=S)
-        
+
+        # Selected courses scrollbar
         selectedCoursesScroller = Scrollbar(self, orient="vertical")
+        # Selected courses listbox
         self.selectedCoursesBox = Listbox(self, width=30, height=20, yscrollcommand=selectedCoursesScroller.set)
         selectedCoursesScroller.config(command=self.selectedCoursesBox.yview)
 
-        self.selectedCoursesBox.grid(row=2, column=2, rowspan=5)
-        selectedCoursesScroller.grid(sticky=E, row = 2, rowspan=5, column = 1, ipady = 138)
+        # Adjust scrollbar and listbox positioning
+        self.selectedCoursesBox.grid(row = 2, column = 2, rowspan = 5)
+        selectedCoursesScroller.grid(sticky = E, row = 2, rowspan = 5, column = 1, columnspan=2, ipady = 138)
 
+        # Populate selected courses listbox
         for course in self.selectedCourses:
             self.selectedCoursesBox.insert(END, course)
 

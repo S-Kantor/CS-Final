@@ -26,7 +26,7 @@ class PreviewTimetableFrame(Frame):
 
         self.initUI()
         
-    def center_window(self):
+    def centerWindow(self):
         '''Centers the window on the screen.'''
         screenWidth = self.parent.winfo_screenwidth()
         screenHeight = self.parent.winfo_screenheight()
@@ -40,7 +40,7 @@ class PreviewTimetableFrame(Frame):
     def initUI(self):
         '''Initializes the user interface by configuring the table layout, adding buttons, etc.'''
         self.parent.title("Timetable")
-        self.center_window()
+        self.centerWindow()
         self.pack(fill=BOTH, expand=1)
 
         # Configure table layout

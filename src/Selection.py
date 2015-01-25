@@ -21,7 +21,7 @@ class SelectionFrame(Frame):
 
         self.initUI()
 
-    def center_window(self):
+    def centerWindow(self):
         '''Centers the window on the screen.'''
         screenWidth = self.parent.winfo_screenwidth()
         screenHeight = self.parent.winfo_screenheight()
@@ -35,7 +35,7 @@ class SelectionFrame(Frame):
     def initUI(self):
         '''Initializes the user interface by configuring the course listboxes and buttons.'''
         self.parent.title("Course Selection Screen")
-        self.center_window()
+        self.centerWindow()
 
         # Make the window resizable
         self.parent.resizable(width=TRUE, height=TRUE)
