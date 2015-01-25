@@ -1,154 +1,132 @@
 ##
-# Name: Sam Kantor
-# Date: 11/17/2014
-# Assignment: New Window
+# Name: Aaron Nahum, Eytan Mezhibovsky, David Landsman
+# File name: Selection.py
+# Description: Contains UI code for the SelectionFrame
 ##
-
 
 from tkinter import *
 from SQLWrapper import *
 from Timetable import *
-s = SQLWrapper()
-selected_courses = []
+
+sqlWrapper = SQLWrapper()
 
 class SelectionFrame(Frame):
-    def __init__(self, parent, studentId, app):
-        Frame.__init__(self, parent)
-
-        self.parent = parent
-        self.app = app
-
-        self.initUI()
-
-        self.studentId = studentId
-
-    def initUI(self):
-        self.parent.geometry("650x425+400+200")
-        self.parent.title("Course Selection Screen")
-        self.parent.resizable(width=TRUE, height=TRUE)
-
-
-        idLabel = Label(self, text="Course Selection:", font=(26))
-        idLabel.grid(row=0, columnspan=20, column=0, sticky=S)
-
-        #####
-        
-        selectedCoursesLabel = Label(self, text="Course:")
-        selectedCoursesLabel.grid(row=1, column=2, sticky=S)
-        
-        selectedCoursesScroller = Scrollbar(self, orient="vertical")
-        self.selectedCoursesBox = Listbox(self, width=30, height=20, yscrollcommand=selectedCoursesScroller.set)
-        selectedCoursesScroller.config(command=self.selectedCoursesBox.yview)
-
-        self.selectedCoursesBox.grid(row=2, column=2)
-        selectedCoursesScroller.grid(sticky=E, row = 2, rowspan = 100, column = 3, ipady = 138)
-
-        submitButton = Button(self, text="Submit Course", command = self.submitCourses)
-        submitButton.grid(row=3, column=1)
-        
-        #####
-        
-        avaliableCoursesLabel = Label(self, text="Available Courses:")
-        avaliableCoursesLabel.grid(row=1, column=0, sticky=S)
-        
-        avaliableCoursesScroller = Scrollbar(self, orient="vertical")
-        self.availableCoursesBox = Listbox(self, width=30, height=20, yscrollcommand=avaliableCoursesScroller.set)
-        avaliableCoursesScroller.config(command=self.availableCoursesBox.yview)
-        for course in s.getAllCourses():
-            self.availableCoursesBox.insert(END, course.name)
-
-        self.availableCoursesBox.grid(row=2, column=0)
-        avaliableCoursesScroller.grid(sticky=E, row = 2, rowspan = 100, column = 1, ipady = 138)
-
-        chooseButton = Button(self, text="Choose Course", command = self.chooseCourse)
-        chooseButton.grid(row=3, column=0)
-        
-        #####
-
-        removeButton = Button(self, text = "Remove Course", command = self.removeCourse)
-        removeButton.grid(row = 3, column = 2)
-
-        #####
-
-        self.pack()
-
-    def chooseCourse(self): #adds a course to your selected courses
-        selection = self.availableCoursesBox.get(self.availableCoursesBox.curselection()[0]) # get selected string
-        if selection not in selected_courses:           
-            if len(selection) > 0:
-                self.selectedCoursesBox.insert(END, selection)
-                selected_courses.append(selection)
-
-    def submitCourses(self): #submits the selected courses and stores it in the database
-        if len(selected_courses) >= 6:
-            self.newWindow = Toplevel(self.master)
-            self.app = ConfirmFrame(self.newWindow, self.studentId)
-            return
-        else:
-            print("Please select " + str((6 - len(selected_courses))) + " more course(s)")
-
-    def removeCourse(self): #removes a course from the selected courses
-        if len(selected_courses) >= 1 and len(selected_courses) <= 6:
-            selection = self.selectedCoursesBox.get(self.selectedCoursesBox.curselection()[0])
-            self.selectedCoursesBox.delete(ANCHOR)
-            selected_courses.remove(selection)
-        else:
-            return
-        
-
-class ConfirmFrame(Frame):
     def __init__(self, parent, studentId):
+        '''Initializes a SelectionFrame.'''
         Frame.__init__(self, parent)
+
         self.parent = parent
-        self.initUI()
         self.studentId = studentId
+        self.selectedCourses = []
+
+        self.initUI()
 
     def center_window(self):
+        '''Centers the window on the screen.'''
         screenWidth = self.parent.winfo_screenwidth()
         screenHeight = self.parent.winfo_screenheight()
 
-        x = (screenWidth / 2) - (300 / 2)
-        y = (screenHeight / 2) - (300 / 2)
+        # Calculate (x, y) position of window
+        x = (screenWidth/2) - (650/2)
+        y = (screenHeight/2) - (425/2)
 
-        self.parent.geometry('%dx%d+%d+%d' % (300, 100, x, y))
+        self.parent.geometry('%dx%d+%d+%d' % (650, 425, x, y))
 
     def initUI(self):
+        '''Initializes the user interface by configuring the course listboxes and buttons.'''
+        self.parent.title("Course Selection Screen")
         self.center_window()
-        self.parent.title("Attention")
-        self.pack(fill = BOTH, expand = 1)
 
-        self.columnconfigure(0, weight = 1)
-        self.rowconfigure(0, weight = 1)
-        self.rowconfigure(1, weight = 1)
-        self.rowconfigure(2, weight = 1)
+        # Make the window resizable
+        self.parent.resizable(width=TRUE, height=TRUE)
 
-        ConfirmFrameLabel = Label(self, text = "Are you sure you want to select these courses?", font = (16))
-        ConfirmFrameLabel.grid(row = 0, column = 0, sticky = S)
-        
-        yesButton = Button(self, text = "Yes", command = self.confirmCourses)
-        yesButton.grid(row = 1, column = 0)
+        # Selection title
+        idLabel = Label(self, text="Select your courses:", font=(26))
+        idLabel.grid(row=0, columnspan=20, column=0, sticky=S)
 
-        noButton = Button(self, text = "No", command = self.cancelCourses)
-        noButton.grid(row = 2, column = 0)
+        # Selected courses title
+        selectedCoursesLabel = Label(self, text="Selected Courses")
+        selectedCoursesLabel.grid(row=1, column=2, sticky=S)
 
-    def confirmCourses(self): #finalizes the selected courses, and opens up the timetable creator 
-        s.addStudentCourses(self.studentId, selected_courses)
-        self.destroy()
-        TimetableFrame(self.parent, self.studentId)
-        
+        # Scrollbar for selection courses listbox
+        selectedCoursesScroller = Scrollbar(self, orient="vertical")
+        # Selected courses listbox
+        self.selectedCoursesBox = Listbox(self, width=30, height=20, yscrollcommand=selectedCoursesScroller.set)
+        selectedCoursesScroller.config(command=self.selectedCoursesBox.yview)
 
-    def cancelCourses(self):
-        self.parent.destroy()
-        
-        
-def main():
-    root = Tk()
-    root.geometry("450x400+400+400")
-    app = MainFrame(root, 2)
-    root.mainloop()
+        # Adjust positioning of selected courses listbox and scroller
+        self.selectedCoursesBox.grid(row=2, column=2)
+        selectedCoursesScroller.grid(sticky=E, row = 1, rowspan = 100, column = 3, ipady = 138)
 
-if __name__ == '__main__':
-    main()
+        # Submit courses button
+        submitButton = Button(self, text="Submit Courses", command = self.submitCourses)
+        submitButton.grid(row=3, column=1)
 
+        # Available courses title
+        avaliableCoursesLabel = Label(self, text="Available Courses")
+        avaliableCoursesLabel.grid(row=1, column=0, sticky=S)
+
+        # Scrollbar for available courses listbox
+        avaliableCoursesScroller = Scrollbar(self, orient="vertical")
+        # Available courses listbox
+        self.availableCoursesBox = Listbox(self, width=30, height=20, yscrollcommand=avaliableCoursesScroller.set)
+        avaliableCoursesScroller.config(command=self.availableCoursesBox.yview)
+        # Fill up the available courses listbox using courses from the courses table in the database
+        for course in sqlWrapper.getAllCourses():
+            self.availableCoursesBox.insert(END, course.name)
+
+        # Adjust positioning of available courses listbox and scroller
+        self.availableCoursesBox.grid(row=2, column=0)
+        avaliableCoursesScroller.grid(sticky=E, row = 1, rowspan = 100, column = 0, ipady = 138, ipadx = 100)
+
+        # Choose course button
+        chooseButton = Button(self, text="Choose Course", command = self.chooseCourse)
+        chooseButton.grid(row=3, column=0)
+
+        # Remove course button
+        removeButton = Button(self, text = "Remove Course", command = self.removeCourse)
+        removeButton.grid(row = 3, column = 2)
+
+        # Update the UI
+        self.pack()
+
+    def chooseCourse(self): #adds a course to your selected courses
+        '''Called from chooseButton.
+        Gets the selected course and adds it to the selected courses listbox.
+        '''
+        # Retrieve selection from available courses listbox
+        selection = self.availableCoursesBox.get(self.availableCoursesBox.curselection()[0])
+
+        # Check if course wasn't selected already
+        if selection not in self.selectedCourses:
+            # Check if selection is valid
+            if len(selection) > 0:
+                # Add to selection courses listbox
+                self.selectedCoursesBox.insert(END, selection)
+                self.selectedCourses.append(selection)
+
+    def submitCourses(self): #submits the selected courses and stores it in the database
+        '''Called from submitButton.
+        Verifies if there are enough courses and calls ConfirmFrame.
+        '''
+        # Check if there are at least 6 courses
+        if len(self.selectedCourses) >= 6:
+            if messagebox.askyesno("Confirm", "Are you sure you want to select these courses?"):
+                # Add selected courses
+                sqlWrapper.addStudentCourses(self.studentId, self.selectedCourses)
+                self.destroy()
+                TimetableFrame(self.parent, self.studentId)
+        else:
+            messagebox.showinfo("Info", "Please select " + str((6 - len(self.selectedCourses))) + " more course(s)!")
+
+    def removeCourse(self):
+        '''Called from removeButton.
+        Removes a course from the selected courses listbox.
+        '''
+        # Check if there is at least 1 course to remove
+        if len(self.selectedCourses) >= 1:
+            selection = self.selectedCoursesBox.get(self.selectedCoursesBox.curselection()[0])
+            self.selectedCoursesBox.delete(ANCHOR)
+            self.selectedCourses.remove(selection)
         
         

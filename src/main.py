@@ -1,15 +1,19 @@
 ##
+# Name: David Landsman
 # File name: main.py
-# Description: Startup script
+# Description: Startup script used to setup database
 ##
 
-from Login import main
+import Login
 from SQLWrapper import *
 
-s = SQLWrapper()
+sqlWrapper = SQLWrapper()
 
-s.createStudentsTable()
-s.createCoursesTable()
-s.generateCourses()
+# Create a table for students
+sqlWrapper.createStudentsTable()
 
-main() # Start LoginFrame
+# Create a table for courses and fill it up with a list of courses
+sqlWrapper.createCoursesTable()
+sqlWrapper.generateCourses()
+
+Login.main() # Start LoginFrame

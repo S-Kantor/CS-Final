@@ -1,32 +1,44 @@
-
-#########################################
-# Programmer: Eytan Mezhibovsky
-# Group: Aaron, David, Eytan, Shmuel
-# Date: December 9th, 2014
-# File Name: Course selection screen
-# Description:  GUI for course selection for timetable final project
-#########################################
+##
+# Programmer: Eytan Mezhibovsky, David Landsman, Aaron Nahum
+# File Name: Timetable.py
+# Description: Contains UI code for the TimetableFrame
+##
 
 from tkinter import *
 from SQLWrapper import *
-s = SQLWrapper()
-selected_courses = []
+
+sqlWrapper = SQLWrapper()
 
 class TimetableFrame(Frame):
     def __init__(self, parent, studentId):
+        '''Initializes a TimetableFrame.'''
         Frame.__init__(self, parent)
 
         self.parent = parent
 
         self.studentId = studentId
+        self.selectedCourses = eval(sqlWrapper.getStudent(self.studentId).selectedCourses)
 
         self.initUI()
 
+    def centerWindow(self):
+        '''Centers the window on the screen.'''
+        screenWidth = self.parent.winfo_screenwidth()
+        screenHeight = self.parent.winfo_screenheight()
+
+        # Calculate (x, y) position of window
+        x = (screenWidth/2) - (650/2)
+        y = (screenHeight/2) - (450/2)
+
+        self.parent.geometry('%dx%d+%d+%d' % (650, 450, x, y))
+        
     def initUI(self):
-        self.parent.geometry("650x450+300+300")
-        self.parent.title("Semester Organizer")
+        '''Initializes the user interface by configuring the table layout, adding buttons, etc.'''
+        self.parent.title("Timetable Creation")
+        self.centerWindow()
         self.pack(fill=BOTH, expand=1)
 
+        # Configure table layout
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
         self.columnconfigure(2, weight=1)
@@ -38,32 +50,29 @@ class TimetableFrame(Frame):
         self.rowconfigure(5, weight=1)
         self.rowconfigure(6, weight=1)
         self.rowconfigure(7, weight=1)
-        
-        idLabel = Label(self, text="Course Selection:", font=(26))
-        idLabel.grid(row=0, columnspan=20, column=0, sticky=S)
 
-        #####
-        #for column in range(0,1):
-            #for row in range(2, 6):
+        # Timetable title
+        idLabel = Label(self, text="Timetable", font=(26))
+        idLabel.grid(row=0, columnspan=20, column=0, sticky=S)
         
-        Box1ID = Label(self, text="Semester 1:")
-        Box1ID.grid(row=1, column=0, sticky=S)
+        semster1 = Label(self, text="Semester 1:")
+        semster1.grid(row=1, column=0, sticky=S)
 
         #Buttons for each period slot on the timetable
-        self.Button_1Left = Button(self,text="Spare", command = self.selectPeriod1)
-        self.Button_1Left.grid(row=2, column=0)
+        self.sem1period1 = Button(self,text="Spare", command = self.selectPeriod1)
+        self.sem1period1.grid(row=2, column=0)
 
-        self.Button_2Left = Button(self,text="Spare", command = self.selectPeriod2)
-        self.Button_2Left.grid(row=3, column=0)
+        self.sem1period2 = Button(self,text="Spare", command = self.selectPeriod2)
+        self.sem1period2.grid(row=3, column=0)
 
-        self.Button_3Left = Button(self,text="Spare", command = self.selectPeriod3)
-        self.Button_3Left.grid(row=4, column=0)
+        self.sem1period3 = Button(self,text="Spare", command = self.selectPeriod3)
+        self.sem1period3.grid(row=4, column=0)
 
-        self.Button_4Left = Button(self,text="Spare", command = self.selectPeriod4)
-        self.Button_4Left.grid(row=5, column=0)
+        self.sem1period4 = Button(self,text="Spare", command = self.selectPeriod4)
+        self.sem1period4.grid(row=5, column=0)
 
-        self.Button_5Left = Button(self,text="Spare", command = self.selectPeriod5)
-        self.Button_5Left.grid(row=6, column=0)
+        self.sem1period5 = Button(self,text="Spare", command = self.selectPeriod5)
+        self.sem1period5.grid(row=6, column=0)
         
         
         #####
@@ -71,223 +80,167 @@ class TimetableFrame(Frame):
         Box2ID = Label(self, text="Semester 2:")
         Box2ID.grid(row=1, column=1, sticky=S)
 
-        self.Button_1Right = Button(self,text="Spare", command = self.selectPeriod6)
-        self.Button_1Right.grid(row=2, column=1)
+        self.sem2period1 = Button(self,text="Spare", command = self.selectPeriod6)
+        self.sem2period1.grid(row=2, column=1)
 
-        self.Button_2Right = Button(self,text="Spare", command = self.selectPeriod7)
-        self.Button_2Right.grid(row=3, column=1)
+        self.sem2period2 = Button(self,text="Spare", command = self.selectPeriod7)
+        self.sem2period2.grid(row=3, column=1)
 
-        self.Button_3Right = Button(self,text="Spare", command = self.selectPeriod8)
-        self.Button_3Right.grid(row=4, column=1)
+        self.sem2period3 = Button(self,text="Spare", command = self.selectPeriod8)
+        self.sem2period3.grid(row=4, column=1)
 
-        self.Button_4Right = Button(self,text="Spare", command = self.selectPeriod9)
-        self.Button_4Right.grid(row=5, column=1)
+        self.sem2period4 = Button(self,text="Spare", command = self.selectPeriod9)
+        self.sem2period4.grid(row=5, column=1)
 
-        self.Button_5Right = Button(self,text="Spare", command = self.selectPeriod10)
-        self.Button_5Right.grid(row=6, column=1)
+        self.sem2period5 = Button(self,text="Spare", command = self.selectPeriod10)
+        self.sem2period5.grid(row=6, column=1)
 
         submitButton = Button(self, text="Submit", command = self.submitCourses)
         submitButton.grid(row=7, column=0, columnspan=2)
         
         #####
-        Box1ID = Label(self, text="Course List:")
-        Box1ID.grid(row=1, column=2, sticky=S)
+        selectedCoursesLabel = Label(self, text="Course List:")
+        selectedCoursesLabel.grid(row=1, column=2, sticky=S)
         
-        scroller1 = Scrollbar(self, orient="vertical")
-        self.Box1 = Listbox(self, width=30, height=20, yscrollcommand=scroller1.set)
-        scroller1.config(command=self.Box1.yview)
+        selectedCoursesScroller = Scrollbar(self, orient="vertical")
+        self.selectedCoursesBox = Listbox(self, width=30, height=20, yscrollcommand=selectedCoursesScroller.set)
+        selectedCoursesScroller.config(command=self.selectedCoursesBox.yview)
 
-        self.Box1.grid(row=2, column=2, rowspan=5)
-        scroller1.grid(sticky=E, row = 2, rowspan=5, column = 1, ipady = 138)
+        self.selectedCoursesBox.grid(row=2, column=2, rowspan=5)
+        selectedCoursesScroller.grid(sticky=E, row = 2, rowspan=5, column = 1, ipady = 138)
 
-        self.selected_courses = eval(s.getStudent(self.studentId).selectedCourses)
-
-        for course in self.selected_courses:
-            self.Box1.insert(END, course)
-            
-
-    #def selectCourse1(self):
-        #selection = self.Box1.get(self.Box1.curselection()[0])
-        #for i in self.semester1:
-            #self.semester1[i-1]["text"] = selection
-        #self.pack()
+        for course in self.selectedCourses:
+            self.selectedCoursesBox.insert(END, course)
 
     def removeFromListbox(self, selection):
-        self.selected_courses.remove(selection)
-        self.Box1.delete(ANCHOR)
-
-    #def removeFromButton(self, selection):
-        #self.Box1.insert(selection)
-        #self.Button["text"] = ""
+        '''Removes the selected course from the listbox.'''
+        self.selectedCourses.remove(selection)
+        self.selectedCoursesBox.delete(ANCHOR)
 
     #functions to select where you want to put a course on the timetable
     def selectPeriod1(self):
-        if self.Button_1Left["text"] != "Spare":
-            selection = self.Button_1Left["text"]
-            self.Box1.insert(END, selection)
-            self.Button_1Left["text"] = "Spare"
-            self.selected_courses.append(selection)
+        # If a period is not a spare, remove the class in that period
+        if self.sem1period1["text"] != "Spare":
+            selection = self.sem1period1["text"]
+            self.selectedCoursesBox.insert(END, selection)
+            self.sem1period1["text"] = "Spare"
+            self.selectedCourses.append(selection)
+        # Else, if a period is a spare, place the selected period in that class
         else:
-            selection = self.Box1.get(self.Box1.curselection()[0])
-            self.Button_1Left["text"] = selection
+            selection = self.selectedCoursesBox.get(self.selectedCoursesBox.curselection()[0])
+            self.sem1period1["text"] = selection
             self.removeFromListbox(selection)
 
     def selectPeriod2(self):
-        if self.Button_2Left["text"] != "Spare":
-            selection = self.Button_2Left["text"]
-            self.Box1.insert(END, selection)
-            self.Button_2Left["text"] = "Spare"
-            self.selected_courses.append(selection)
+        if self.sem1period2["text"] != "Spare":
+            selection = self.sem1period2["text"]
+            self.selectedCoursesBox.insert(END, selection)
+            self.sem1period2["text"] = "Spare"
+            self.selectedCourses.append(selection)
         else:
-            selection = self.Box1.get(self.Box1.curselection()[0])
-            self.Button_2Left["text"] = selection
+            selection = self.selectedCoursesBox.get(self.selectedCoursesBox.curselection()[0])
+            self.sem1period2["text"] = selection
             self.removeFromListbox(selection)
 
     def selectPeriod3(self):
-        if self.Button_3Left["text"] != "Spare":
-            selection = self.Button_3Left["text"]
-            self.Box1.insert(END, selection)
-            self.Button_3Left["text"] = "Spare"
-            self.selected_courses.append(selection)
+        if self.sem1period3["text"] != "Spare":
+            selection = self.sem1period3["text"]
+            self.selectedCoursesBox.insert(END, selection)
+            self.sem1period3["text"] = "Spare"
+            self.selectedCourses.append(selection)
         else:
-            selection = self.Box1.get(self.Box1.curselection()[0])
-            self.Button_3Left["text"] = selection
+            selection = self.selectedCoursesBox.get(self.selectedCoursesBox.curselection()[0])
+            self.sem1period3["text"] = selection
             self.removeFromListbox(selection)
 
     def selectPeriod4(self):
-        if self.Button_4Left["text"] != "Spare":
-            selection = self.Button_4Left["text"]
-            self.Box1.insert(END, selection)
-            self.Button_4Left["text"] = "Spare"
-            self.selected_courses.append(selection)
+        if self.sem1period4["text"] != "Spare":
+            selection = self.sem1period4["text"]
+            self.selectedCoursesBox.insert(END, selection)
+            self.sem1period4["text"] = "Spare"
+            self.selectedCourses.append(selection)
         else:
-            selection = self.Box1.get(self.Box1.curselection()[0])
-            self.Button_4Left["text"] = selection
+            selection = self.selectedCoursesBox.get(self.selectedCoursesBox.curselection()[0])
+            self.sem1period4["text"] = selection
             self.removeFromListbox(selection)
 
     def selectPeriod5(self):
-        if self.Button_5Left["text"] != "Spare":
-            selection = self.Button_5Left["text"]
-            self.Box1.insert(END, selection)
-            self.Button_5Left["text"] = "Spare"
-            self.selected_courses.append(selection)
+        if self.sem1period5["text"] != "Spare":
+            selection = self.sem1period5["text"]
+            self.selectedCoursesBox.insert(END, selection)
+            self.sem1period5["text"] = "Spare"
+            self.selectedCourses.append(selection)
         else:
-            selection = self.Box1.get(self.Box1.curselection()[0])
-            self.Button_5Left["text"] = selection
+            selection = self.selectedCoursesBox.get(self.selectedCoursesBox.curselection()[0])
+            self.sem1period5["text"] = selection
             self.removeFromListbox(selection)
 
     def selectPeriod6(self):
-        if self.Button_1Right["text"] != "Spare":
-            selection = self.Button_1Right["text"]
-            self.Box1.insert(END, selection)
-            self.Button_1Right["text"] = "Spare"
-            self.selected_courses.append(selection)
+        if self.sem2period1["text"] != "Spare":
+            selection = self.sem2period1["text"]
+            self.selectedCoursesBox.insert(END, selection)
+            self.sem2period1["text"] = "Spare"
+            self.selectedCourses.append(selection)
         else:
-            selection = self.Box1.get(self.Box1.curselection()[0])
-            self.Button_1Right["text"] = selection
+            selection = self.selectedCoursesBox.get(self.selectedCoursesBox.curselection()[0])
+            self.sem2period1["text"] = selection
             self.removeFromListbox(selection)
 
     def selectPeriod7(self):
-        if self.Button_2Right["text"] != "Spare":
-            selection = self.Button_2Right["text"]
-            self.Box1.insert(END, selection)
-            self.Button_2Right["text"] = "Spare"
-            self.selected_courses.append(selection)
+        if self.sem2period2["text"] != "Spare":
+            selection = self.sem2period2["text"]
+            self.selectedCoursesBox.insert(END, selection)
+            self.sem2period2["text"] = "Spare"
+            self.selectedCourses.append(selection)
         else:
-            selection = self.Box1.get(self.Box1.curselection()[0])
-            self.Button_2Right["text"] = selection
+            selection = self.selectedCoursesBox.get(self.selectedCoursesBox.curselection()[0])
+            self.sem2period2["text"] = selection
             self.removeFromListbox(selection)
 
     def selectPeriod8(self):
-        if self.Button_3Right["text"] != "Spare":
-            selection = self.Button_3Right["text"]
-            self.Box1.insert(END, selection)
-            self.Button_3Right["text"] = "Spare"
-            self.selected_courses.append(selection)
+        if self.sem2period3["text"] != "Spare":
+            selection = self.sem2period3["text"]
+            self.selectedCoursesBox.insert(END, selection)
+            self.sem2period3["text"] = "Spare"
+            self.selectedCourses.append(selection)
         else:
-            selection = self.Box1.get(self.Box1.curselection()[0])
-            self.Button_3Right["text"] = selection
+            selection = self.selectedCoursesBox.get(self.selectedCoursesBox.curselection()[0])
+            self.sem2period3["text"] = selection
             self.removeFromListbox(selection)
 
     def selectPeriod9(self):
-        if self.Button_4Right["text"] != "Spare":
-            selection = self.Button_4Right["text"]
-            self.Box1.insert(END, selection)
-            self.Button_4Right["text"] = "Spare"
-            self.selected_courses.append(selection)
+        if self.sem2period4["text"] != "Spare":
+            selection = self.sem2period4["text"]
+            self.selectedCoursesBox.insert(END, selection)
+            self.sem2period4["text"] = "Spare"
+            self.selectedCourses.append(selection)
         else:
-            selection = self.Box1.get(self.Box1.curselection()[0])
-            self.Button_4Right["text"] = selection
+            selection = self.selectedCoursesBox.get(self.selectedCoursesBox.curselection()[0])
+            self.sem2period4["text"] = selection
             self.removeFromListbox(selection)
 
     def selectPeriod10(self):
-        if self.Button_5Right["text"] != "Spare":
-            selection = self.Button_5Right["text"]
-            self.Box1.insert(END, selection)
-            self.Button_5Right["text"] = "Spare"
-            self.selected_courses.append(selection)
+        if self.sem2period5["text"] != "Spare":
+            selection = self.sem2period5["text"]
+            self.selectedCoursesBox.insert(END, selection)
+            self.sem2period5["text"] = "Spare"
+            self.selectedCourses.append(selection)
         else:
-            selection = self.Box1.get(self.Box1.curselection()[0])
-            self.Button_5Right["text"] = selection
+            selection = self.selectedCoursesBox.get(self.selectedCoursesBox.curselection()[0])
+            self.sem2period5["text"] = selection
             self.removeFromListbox(selection)
 
-    def submitCourses(self): #submits the timetable schedule and creates a final course list for the student
-        self.final_courses = [self.Button_1Left["text"], self.Button_2Left["text"], self.Button_3Left["text"], self.Button_4Left["text"], self.Button_5Left["text"], self.Button_1Right["text"], self.Button_2Right["text"], self.Button_3Right["text"], self.Button_4Right["text"], self.Button_5Right["text"]]
-        if len(self.selected_courses) == 0:
-            self.newWindow = Toplevel(self.master)
-            self.app = Confirm(self.newWindow, self.studentId, self.final_courses)
-            
-
-
-class Confirm(Frame):
-    def __init__(self, parent, studentId, courses):
-        Frame.__init__(self, parent)
-        self.parent = parent
-        self.initUI()
-        self.studentId = studentId
-        self.courses = courses
-
-    def center_window(self):
-        screenWidth = self.parent.winfo_screenwidth()
-        screenHeight = self.parent.winfo_screenheight()
-
-        x = (screenWidth / 2) - (300 / 2)
-        y = (screenHeight / 2) - (300 / 2)
-
-        self.parent.geometry('%dx%d+%d+%d' % (300, 100, x, y))
-
-    def initUI(self):
-        self.center_window()
-        self.parent.title("Attention")
-        self.pack(fill = BOTH, expand = 1)
-
-        self.columnconfigure(0, weight = 1)
-        self.rowconfigure(0, weight = 1)
-        self.rowconfigure(1, weight = 1)
-        self.rowconfigure(2, weight = 1)
-
-        ConfirmFrameLabel = Label(self, text = "Are you sure you want to select these courses?", font = (16))
-        ConfirmFrameLabel.grid(row = 0, column = 0, sticky = S)
-        
-        yesButton = Button(self, text = "Yes", command = self.confirmCourses)
-        yesButton.grid(row = 1, column = 0)
-
-        noButton = Button(self, text = "No", command = self.cancelCourses)
-        noButton.grid(row = 2, column = 0)
-
-    def confirmCourses(self): #confirms your final courses and stores it in the database
-        s.addFinalCourses(self.studentId, self.courses)
-        self.parent.destroy()
-
-    def cancelCourses(self):
-        self.parent.destroy()
-
-        
-def main():
-    root = Tk()
-    #root.geometry("600x450+300+300")
-    app = TimetableFrame(root, 2)
-    root.mainloop()
-
-if __name__ == '__main__':
-    main()
+    def submitCourses(self):
+        '''Called from submitButton
+        Stores the timetable in the database.
+        '''
+        self.finalCourses = [self.sem1period1["text"], self.sem1period2["text"], self.sem1period3["text"], self.sem1period4["text"], self.sem1period5["text"], self.sem2period1["text"], self.sem2period2["text"], self.sem2period3["text"], self.sem2period4["text"], self.sem2period5["text"]]
+        # Make sure that the student placed all of his courses
+        if len(self.selectedCourses) == 0:
+            if messagebox.askyesno("Confirm", "Are you sure you want to submit this timetable?"):
+                # Save the final courses in the database and close the program
+                sqlWrapper.addFinalCourses(self.studentId, self.finalCourses)
+                self.destroy()
+                self.parent.destroy()
+        else:
+            messagebox.showerror("Error", "Cannot submit timetable without all courses.")
